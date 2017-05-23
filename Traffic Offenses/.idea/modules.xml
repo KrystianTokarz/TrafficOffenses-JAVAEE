@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/application.iml" filepath="$PROJECT_DIR$/application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-api/core-api.iml" filepath="$PROJECT_DIR$/core-api/core-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-application/core-application.iml" filepath="$PROJECT_DIR$/core-application/core-application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-ejb/core-ejb.iml" filepath="$PROJECT_DIR$/core-ejb/core-ejb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-model/core-model.iml" filepath="$PROJECT_DIR$/core-model/core-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-web/core-web.iml" filepath="$PROJECT_DIR$/core-web/core-web.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="core-web:war">
+    <output-path>$PROJECT_DIR$/core-web/target</output-path>
+    <root id="archive" name="core-web-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="core-web:war exploded" />
+    </root>
+  </artifact>
+</component>

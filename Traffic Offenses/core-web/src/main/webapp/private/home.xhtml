@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Traffic Offenses</title>
+</h:head>
+<h:body>
+    <f:view>
+        <h:outputLabel value="Witaj w strefie prywatnej :)"/>
+    </f:view>
+    <h:form>
+        <h:commandButton value="Logout" action="#{logoutBean.logout}"/>
+    </h:form>
+    <br/>
+    <h:button value="Strona publiczna" outcome="toHomePage"/>
+    <br/>
+    <h:button value="Wystaw mandat" outcome="toMandatePage"/>
+    <br/>
+    <f:view>
+        <h:outputLabel value="Podaj dane kierowcy aby spradzić go w bazie danych"/>
+    </f:view>
+    <br/>
+    <h:form id="driver-information-form">
+        <h:outputLabel for="pesel">Pesel</h:outputLabel>
+        <h:inputText id="pesel" value="#{policeInformationBean.pesel}"/><br/>
+        <h:outputLabel for="drivingLicense">Number prawa jazdy</h:outputLabel>
+        <h:inputText id="drivingLicense" value="#{policeInformationBean.drivingLicense}"/><br/>
+        <h:commandButton value="Zatwierdż" >
+            <f:ajax  execute="@form" render="container" listener="#{policeInformationBean.findDriver()}" />
+        </h:commandButton>
+    </h:form>
+
+
+
+    <h:panelGroup id="container" >
+        <h:panelGroup id="driver-information" rendered="#{policeInformationBean.hideOrShowDriverInformation() == true}">
+            <h:outputLabel value="liczba punktow karnych:"/>
+            <h:outputLabel id="driverNumberOfPoints" value="#{policeInformationBean.numberOfPoints}" /><br/>
+            <h:outputLabel value="status licencji: "/>
+            <h:outputLabel id="driverLicenseStatus" value="#{policeInformationBean.drivingLicenseStatus}" /><br/>
+            <h:outputLabel value="numer licencji: "/>
+            <h:outputLabel id="driverLicenseNumber" value="#{policeInformationBean.drivingLicense}" /><br/>
+            <h:outputLabel value="pesel: " />
+            <h:outputLabel id="driverPesel" value="#{policeInformationBean.driverPesel}" /><br/>
+            <h:outputLabel value="nazwisko : "/>
+            <h:outputLabel id="driverLastName" value="#{policeInformationBean.driverLastName}" /><br/>
+            <h:outputLabel value="imię : " />
+            <h:outputLabel id="driverFirstName" value="#{policeInformationBean.driverFirstName}" /><br/>
+        </h:panelGroup >
+    </h:panelGroup >
+
+
+
+
+    <!---->
+</h:body>
+</html>
