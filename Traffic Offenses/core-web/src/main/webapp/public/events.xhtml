@@ -4,57 +4,66 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
 <h:head>
     <title>Traffic Offenses</title>
+    <style type="text/css">
+        .background-class{
+            background-image: url("#{resource['img/public-bg.jpeg']}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+    <h:outputStylesheet name="css/style.css"  />
 </h:head>
-<h:body>
-    <br/>
-    <h:form>
-        <h:commandButton value="Logout" action="#{logoutBean.logout}"/>
-    </h:form>
+<h:body styleClass="background-class">
+    <p:menubar>
+        <p:menuitem value="Traffic Offenses" url="http://localhost:8080/core-web/"/>
 
-    <h2>INFORMACJE O ZDARZENIACH ZWIAZANYCH Z KONTEM UZYTKOWNIKA</h2>
+        <p:submenu label="Menu" icon="ui-icon-document">
+            <p:menuitem  value="Private" rendered="#{facesContext.externalContext.isUserInRole('ROLE_PRIVATE')}" outcome="toPrivateHomePage"/>
+            <p:menuitem  value="Eventy" outcome="toEventsPage"/>
+        </p:submenu>
 
-    <!--<h3>LICZBA TWOICH PUNKTÓW = </h3>-->
-    <!--<ui:repeat value="#{userEvents.userEvents}" var="value">-->
-        <!--#{value} <br />-->
-    <!--</ui:repeat>-->
 
-    LICZA WSZYSTKICH PUNKTÓW : <h:outputText value="#{userEventsBean.userPoints}"/>
-    <h:dataTable value="#{userEventsBean.userEvents}" var="event"
-                 styleClass="order-table"
-                 headerClass="order-table-header"
-                 rowClasses="order-table-odd-row,order-table-even-row"
-
-    >
-
-        <h:column>
-            <f:facet name="header">Event Type</f:facet>>
-            <h:outputText value="#{event.eventItemType}" />
-        </h:column>
-
-        <h:column>
-            <f:facet name="header">Ilosc punktów</f:facet>
-            <h:outputText value="#{event.allPoints}" />
-        </h:column>
-
-        <h:column>
-            <f:facet name="header">Data utworzenia</f:facet>
-            <h:outputText value="#{event.creationDate}" />
-
-        </h:column>
-
-        <h:column>
-            <f:facet name="header">Informacje mandatowe</f:facet>
+        <f:facet name="options">
             <h:form>
-                <h:commandLink value="Kliknij" action="#{userEventsBean.setSelectedEventInformation(event.aggregateRootEntityId)}" />
+                <p:commandButton value="Wyloguj się" action="#{logoutBean.logout}"/>
             </h:form>
-        </h:column>
+        </f:facet>
+    </p:menubar>
 
-    </h:dataTable>
+    <div class="container user-information-container">
 
+        <h2>Informacje o zdarzeniach użytkownika</h2>
 
+        <h3>Aktualna liczba punktów karnych : </h3>
+        <h3 style="color:red;"> <h:outputText value="#{userEventsBean.userPoints} punktów"/></h3>
+    </div>
+    <div class="container table-information">
+        <p:dataTable value="#{userEventsBean.userEvents}" var="event" rowIndexVar="row">
+            <p:column headerText="Typ zdarzenia">
+                <h:outputText value="#{event.eventItemType}" />
+            </p:column>
 
+            <p:column headerText="Ilosc punktów">
+                <h:outputText value="#{event.allPoints}" />
+            </p:column>
+
+            <p:column headerText="Data utworzenia" priority="2">
+                <h:outputText value="#{event.creationDate}" />
+            </p:column>
+
+            <p:column headerText="Informacje dodatkowe" priority="4">
+                <h:form>
+                    <p:commandLink value="Sprawdz" action="#{userEventsBean.setSelectedEventInformation(row)}" />
+                </h:form>
+            </p:column>
+        </p:dataTable>
+    </div>
+    <div id="footer">Projekt Aplikacji Internetowej JAVA EE </div>
 </h:body>
 </html>

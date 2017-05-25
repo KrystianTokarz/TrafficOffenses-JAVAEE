@@ -5,7 +5,7 @@ import domainmodel.suport.domain.AggregateRoot;
 
 import java.util.Date;
 
-public interface Snapshot {
+public interface Snapshot{
 
      Integer getNumberOfPoints();
 

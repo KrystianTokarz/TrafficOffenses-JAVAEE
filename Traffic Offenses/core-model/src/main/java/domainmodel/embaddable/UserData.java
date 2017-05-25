@@ -31,7 +31,6 @@ public class UserData implements Serializable {
         return userAggregateRootId;
     }
 
-
     public String getFirstName() {
         return firstName;
     }
@@ -40,36 +39,13 @@ public class UserData implements Serializable {
         return lastName;
     }
 
-
     public String getPesel() {
         return pesel;
     }
-
-
 
     public String getLicenseNumber() {
         return licenseNumber;
     }
 
 
-    //
-//    public Long getUserAggregateRootId() {
-//        return this.userAggregateRootId;
-//    }
-//
-//    public String getFirstName() {
-//        return firstName;
-//    }
-//
-//    public String getLastName() {
-//        return lastName;
-//    }
-//
-//    public String getPesel() {
-//        return pesel;
-//    }
-//
-//    public String getLicenseNumber() {
-//        return licenseNumber;
-//    }
 }

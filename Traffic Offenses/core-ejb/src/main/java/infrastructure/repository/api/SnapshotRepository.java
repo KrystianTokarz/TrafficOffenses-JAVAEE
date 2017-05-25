@@ -1,6 +1,11 @@
 package infrastructure.repository.api;
 
 import api.exception.repository.*;
+import api.exception.repository.snapshot.SnapshotNotActiveException;
+import api.exception.repository.snapshot.SnapshotNotFoundException;
+import api.exception.repository.snapshot.SnapshotWithVersionNotActiveException;
+import api.exception.repository.snapshot.SnapshotWithVersionNotFoundException;
+import domainmodel.domain.snapshot.Snapshot;
 import domainmodel.domain.snapshot.SnapshotEntity;
 
 import javax.ejb.Local;
@@ -8,17 +13,17 @@ import javax.ejb.Local;
 @Local
 public interface SnapshotRepository {
 
-    SnapshotEntity load(Long aggregateId) throws AggregateNotFoundException, AggregateNotActiveException;
+    Snapshot load(Long aggregateId) throws AggregateNotFoundException, AggregateNotActiveException;
 
     void persist(SnapshotEntity snapshot);
 
-    SnapshotEntity merge(SnapshotEntity snapshot);
+    Snapshot merge(SnapshotEntity snapshot);
 
     void delete(Long aggregateId) throws AggregateNotFoundException, AggregateNotActiveException;
 
-    SnapshotEntity findLastSnapshot(Long userId) throws SnapshotNotFoundException;
+    Snapshot findLastSnapshot(Long userId) throws SnapshotNotFoundException, SnapshotNotActiveException;
 
-    public SnapshotEntity findSnapshotWithEventVersion(Long userId, String version) throws SnapshotWithVersionNotFoundException;
+    Snapshot findSnapshotWithEventVersion(Long userId, Long version) throws SnapshotWithVersionNotFoundException, SnapshotWithVersionNotActiveException;
 
 
 }

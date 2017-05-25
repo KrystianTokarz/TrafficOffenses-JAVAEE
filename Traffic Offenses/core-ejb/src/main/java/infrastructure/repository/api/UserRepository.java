@@ -1,9 +1,9 @@
 package infrastructure.repository.api;
 
-import api.exception.UserNotActiveException;
+import api.exception.repository.user.UserNotActiveException;
 import api.exception.repository.AggregateNotActiveException;
 import api.exception.repository.AggregateNotFoundException;
-import api.exception.repository.UserNotFoundException;
+import api.exception.repository.user.UserNotFoundException;
 import domainmodel.domain.user.User;
 
 import javax.ejb.Local;

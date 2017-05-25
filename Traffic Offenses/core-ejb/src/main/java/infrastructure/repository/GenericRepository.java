@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType;
 
 public class GenericRepository<T extends AggregateRoot> {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "offensesPU")
     protected EntityManager entityManager;
 
     private Class<T> clazz;

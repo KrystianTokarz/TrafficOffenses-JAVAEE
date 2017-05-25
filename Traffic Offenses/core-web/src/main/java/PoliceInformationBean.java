@@ -1,5 +1,5 @@
-import api.exception.UserNotActiveException;
-import api.exception.repository.UserNotFoundException;
+import api.exception.repository.user.UserNotActiveException;
+import api.exception.repository.user.UserNotFoundException;
 import api.readmodel.PrivateUserDataFinder;
 import domainmodel.embaddable.DrivingLicense;
 import exception.NullDrivingLicenseException;
@@ -20,7 +20,6 @@ public class PoliceInformationBean {
 
     private String pesel;
     private String drivingLicense;
-
 
     public String getPesel() {
         return pesel;
@@ -44,6 +43,7 @@ public class PoliceInformationBean {
         else
             return true;
     }
+
 
     public void findDriver(){
         try {
@@ -90,7 +90,7 @@ public class PoliceInformationBean {
             return null;
         else {
             try {
-                return userDataWithPointsVO.getUser().getLicenseNumber();
+                return userDataWithPointsVO.getUser().getDrivingLicense().getLicenseNumber();
             } catch (NullDrivingLicenseException e) {
                 return "brak licencji";
             }
@@ -102,7 +102,7 @@ public class PoliceInformationBean {
             return null;
         else {
             try {
-                return userDataWithPointsVO.getUser().getLicenseStatus();
+                return userDataWithPointsVO.getUser().getDrivingLicense().getStatus();
             } catch (NullDrivingLicenseException e) {
                 return null;
             }

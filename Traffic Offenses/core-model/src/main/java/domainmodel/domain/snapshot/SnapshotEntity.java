@@ -9,7 +9,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(
               name = "Snapshot.findLastSnapshot",
-              query = "SELECT s FROM SnapshotEntity s where s.userData.userAggregateRootId = :userID  ORDER BY s.creationDate"
+              query = "SELECT s FROM SnapshotEntity s where s.userData.userAggregateRootId = :userID  ORDER BY s.creationDate DESC"
         ),
         @NamedQuery(
                 name = "Snapshot.findSnapshotWithVersion",
@@ -20,9 +20,9 @@ import java.util.Date;
 @Table(name = "SNAPSHOT")
 public class SnapshotEntity extends AggregateRoot implements Snapshot {
 
-    protected Integer numberOfPoints;
-    protected Long eventVersion;
-    protected Date creationDate;
+    private Integer numberOfPoints;
+    private Long eventVersion;
+    private Date creationDate;
 
     @Embedded
     private UserData userData;

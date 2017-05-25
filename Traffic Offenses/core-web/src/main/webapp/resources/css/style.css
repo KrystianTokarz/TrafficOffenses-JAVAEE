@@ -1,0 +1,57 @@
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 95% !important;
+}
+
+.container{
+    text-align: center;
+}
+
+.welcome-one{
+    margin-top: 100px;
+}
+
+.welcome-two{
+    margin-top: 20px;
+}
+
+#login-button{
+    margin-top: 100px;
+
+}
+
+#test-button{
+    margin-top: 50px;
+
+}
+
+
+#footer{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 3px;
+    background-color: #efefef;
+    text-align: center;
+}
+
+.login-information-container{
+    margin-top:100px;
+    margin-bottom:20px;
+}
+
+.table-information{
+   margin: 100px 120px 50px 120px;
+}
+
+.user-information-container{
+    margin-top: 50px;
+}
+
+.private-select-container{
+    margin-top:50px;
+}
+
+.private-user-button{
+    margin-top:50px;
+}

@@ -5,14 +5,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Embeddable
-//@Access(AccessType.FIELD)
 public class DrivingLicense implements Serializable{
 
     public enum DrivingLicenseStatus{
-        ACTIVE,TEMPORARY_INACTIVE, PERNAMENT_INACTIVE
+        ACTIVE,TEMPORARY_INACTIVE, PERMAMENT_INACTIVE
     }
 
-    @Column( unique = true )
+    @Column(unique = true)
     private String licenseNumber;
     private Date createLicenseDate;
     private DrivingLicenseStatus status;
@@ -31,7 +30,6 @@ public class DrivingLicense implements Serializable{
         return licenseNumber;
     }
 
-
     public Date getCreateLicenseDate() {
         return createLicenseDate;
     }
@@ -47,6 +45,7 @@ public class DrivingLicense implements Serializable{
     public boolean licenseIsActive(){
         return (status==DrivingLicenseStatus.ACTIVE);
     }
+
 
 
 }

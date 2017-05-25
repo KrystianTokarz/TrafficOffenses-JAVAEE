@@ -4,17 +4,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>Traffic Offenses - login error page</title>
-</h:head>
-<h:body>
-    <f:view>
-        <h:outputLabel value="NIE UDAŁO SIĘ ZALOGOWAĆ, SPRÓBUJ PONOWNIE"/>
-    </f:view>
-    <h:button value="ZALOGUJ SIĘ" outcome="toHomePage"/>
-    <h:button value="WRÓĆ NA STRONĘ GŁÓWNĄ" outcome="toWelcomePage"/>
+    <h:outputStylesheet name="css/style.css"  />
+    <style type="text/css">
+        .background-class{
+            background-image: url("#{resource['img/public-bg.jpeg']}");
+            background-repeat: repeat;
 
+        }
+    </style>
+</h:head>
+<h:body styleClass="background-class">
+
+    <p:menubar>
+        <p:menuitem value="Traffic Offenses" url="http://localhost:8080/core-web/"/>
+
+        <f:facet name="options">
+            <p:button type="button" value="Strona główna" outcome="toWelcomePage" icon="ui-icon-arrowthick-1-w" />
+        </f:facet>
+    </p:menubar>
+
+    <div class="container" style="margin-top:150px;">
+        <h1>NIE UDAŁO SIĘ ZALOGOWAĆ, SPRÓBUJ POWOWNIE</h1>
+    </div>
+    <div id="login-button" class="container">
+        <p:button outcome="toPublicHomePage" value="Zaloguj się do systemu" icon="ui-icon-power"/>
+    </div>
+
+    <div id="footer">Projekt Aplikacji Internetowej JAVA EE </div>
 
 </h:body>
 </html>

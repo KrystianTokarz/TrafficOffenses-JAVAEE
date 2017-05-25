@@ -23,7 +23,7 @@
             <url-pattern>/public/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>PUBLIC_USER</role-name>
+            <role-name>ROLE_PUBLIC</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -33,7 +33,7 @@
             <url-pattern>/private/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>PRIVATE_USER</role-name>
+            <role-name>ROLE_PRIVATE</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -43,7 +43,7 @@
             <url-pattern>/admin/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ADMINISTRATOR</role-name>
+            <role-name>ROLE_ADMINISTRATOR</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -58,12 +58,19 @@
     </login-config>
 
     <security-role>
-        <role-name>ADMINISTRATOR</role-name>
+        <role-name>ROLE_ADMINISTRATOR</role-name>
     </security-role>
     <security-role>
-        <role-name>PRIVATE_USER</role-name>
+        <role-name>ROLE_PRIVATE</role-name>
     </security-role>
     <security-role>
-        <role-name>PUBLIC_USER</role-name>
+        <role-name>ROLE_PUBLIC</role-name>
     </security-role>
+
+
+
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>black-tie</param-value>
+    </context-param>
 </web-app>

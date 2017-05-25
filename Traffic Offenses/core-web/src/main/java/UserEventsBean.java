@@ -1,18 +1,14 @@
-import api.exception.UserNotActiveException;
-import api.exception.repository.UserNotFoundException;
+import api.exception.repository.user.UserNotActiveException;
+import api.exception.repository.user.UserNotFoundException;
 import api.readmodel.PublicUserDataFinder;
 import domainmodel.domain.event.Event;
 import readmodel.UserEventsWithPointsVO;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.inject.Any;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,22 +24,19 @@ public class UserEventsBean implements Serializable {
 
 
     public Event getSelectedEvent(){
-        return userEventsWithPoints.getEvents()
-                .stream()
-                .filter(e -> e.getAggregateRootEntityId() == selectedEventIndex)
-                .findFirst()
-                .get();
+        return userEventsWithPoints.getEvents().get(selectedEventIndex);
+//                .stream()
+//                .filter(e -> e.getAggregateRootEntityId() == selectedEventIndex)
+//                .findFirst()
+//                .get();
     }
 
-    public void setSelectedEventIndex(int s){
-        this.selectedEventIndex = s;
-    }
 
 
     public String setSelectedEventInformation(int row) {
 
         selectedEventIndex = row;
-        return "event-information.xhtml";
+        return "event-information.xhtml?faces-redirect=true";
 
     }
 

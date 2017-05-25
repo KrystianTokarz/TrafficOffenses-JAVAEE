@@ -3,8 +3,8 @@ package infrastructure.repository.api;
 
 import api.exception.repository.AggregateNotActiveException;
 import api.exception.repository.AggregateNotFoundException;
-import api.exception.repository.EventsNotFoundException;
-import api.exception.repository.EventsWithVersionNotFoundException;
+import api.exception.repository.event.EventsNotFoundException;
+import api.exception.repository.event.EventsWithVersionNotFoundException;
 import domainmodel.domain.event.Event;
 
 import javax.ejb.Local;

@@ -1,6 +1,6 @@
 
-import api.exception.UserNotActiveException;
-import api.exception.repository.UserNotFoundException;
+import api.exception.repository.user.UserNotActiveException;
+import api.exception.repository.user.UserNotFoundException;
 import api.readmodel.PublicUserDataFinder;
 import readmodel.SimpleUserDataVO;
 import domainmodel.embaddable.DrivingLicense;
@@ -53,22 +53,22 @@ public class UserDataBean {
     }
     public String getLicenseNumber(){
         try {
-            return userData.getUser().getLicenseNumber();
+            return userData.getUser().getDrivingLicense().getLicenseNumber();
         } catch (NullDrivingLicenseException e) {
             return "brak informacji";
         }
     }
     public DrivingLicense.DrivingLicenseStatus getLicenseStatus(){
         try {
-            return userData.getUser().getLicenseStatus();
+            return userData.getUser().getDrivingLicense().getStatus();
         } catch (NullDrivingLicenseException e) {
-            return DrivingLicense.DrivingLicenseStatus.PERNAMENT_INACTIVE;
+            return DrivingLicense.DrivingLicenseStatus.ACTIVE;
         }
     }
 
     public Date getCreationLicenseDate(){
         try {
-            return userData.getUser().getCreateLicenseDate();
+            return userData.getUser().getDrivingLicense().getCreateLicenseDate();
         } catch (NullDrivingLicenseException e) {
             return null;
         }

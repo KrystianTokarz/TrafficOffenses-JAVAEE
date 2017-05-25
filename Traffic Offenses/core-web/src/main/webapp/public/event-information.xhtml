@@ -4,37 +4,59 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
 <h:head>
     <title>Traffic Offenses</title>
+    <style type="text/css">
+        .background-class{
+            background-image: url("#{resource['img/public-bg.jpeg']}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+    <h:outputStylesheet name="css/style.css"  />
 </h:head>
-<h:body>
-    <br/>
-    <h:form>
-        <h:commandButton value="Logout" action="#{logoutBean.logout}"/>
-    </h:form>
+<h:body styleClass="background-class">
+    <p:menubar>
+        <p:menuitem value="Traffic Offenses" url="http://localhost:8080/core-web/"/>
 
-    <h2>INFORMACJE O WYBRANYM EVENCIE</h2>
+        <p:submenu label="Menu" icon="ui-icon-document">
+            <p:menuitem  value="Private" rendered="#{facesContext.externalContext.isUserInRole('ROLE_PRIVATE')}" outcome="toPrivateHomePage"/>
+            <p:menuitem  value="Eventy" outcome="toEventsPage"/>
+        </p:submenu>
 
 
+        <f:facet name="options">
+            <h:form>
+                <p:commandButton value="Wyloguj się" action="#{logoutBean.logout}"/>
+            </h:form>
+        </f:facet>
+    </p:menubar>
 
-    <h:outputText value="#{userEventsBean.selectedEvent.eventItemType}"/>
-    <h:outputText value="#{userEventsBean.selectedEvent.allPoints}"/>
+    <div class="container user-information-container">
 
-    <h:dataTable value="#{userEventsBean.selectedEvent.eventItemList}" var="eventItem"
-    >
+        <h2>Informacje o zdarzeniach użytkownika</h2>
 
-    <h:column>
-    <f:facet name="header">Item Type</f:facet>>
-    <h:outputText value="#{eventItem.eventItemType}" />
-    </h:column>
+        <h3>
+            <h:outputText value="Zdarzenie :  #{userEventsBean.selectedEvent.eventItemType}"/>
+        </h3>
+    </div>
 
-    <h:column>
-    <f:facet name="header">Ilosc punktów</f:facet>
-    <h:outputText value="#{eventItem.points}" />
-    </h:column>
+    <div class="container table-information">
+        <p:dataTable value="#{userEventsBean.selectedEvent.eventItemList}" var="eventItem">
+            <p:column headerText="Typ wykroczenia">
+                <h:outputText value="#{eventItem.eventItemType}" />
+            </p:column>
 
-    </h:dataTable>
-
+            <p:column headerText="Ilosc punktów">
+                <h:outputText value="#{eventItem.points}" />
+            </p:column>
+        </p:dataTable>
+    </div>
+    <div id="footer">Projekt Aplikacji Internetowej JAVA EE </div>
 </h:body>
 </html>
+

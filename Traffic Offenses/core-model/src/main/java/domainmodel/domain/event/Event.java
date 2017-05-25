@@ -32,10 +32,15 @@ public class Event extends AggregateRoot {
     public Event() {
     }
 
-    public Event(UserData userData,EventType eventType) {
+    public Event(UserData userData,EventType eventType,Long eventVersion) {
         this.creationDate = new Date();
         this.userData = userData;
         this.eventType = eventType;
+        this.eventVersion = eventVersion;
+    }
+
+    public UserData getUserData() {
+        return userData;
     }
 
 
@@ -49,10 +54,6 @@ public class Event extends AggregateRoot {
 
     public Collection<EventItem> getEventItemList() {
         return Collections.unmodifiableCollection(eventItems);
-    }
-
-    public void setEventVersion(Long newEventVersion){
-        this.eventVersion = newEventVersion;
     }
 
     public Long getEventVersion(){

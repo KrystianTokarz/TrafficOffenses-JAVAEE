@@ -6,7 +6,7 @@
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
-            <from-outcome>toHomePage</from-outcome>
+            <from-outcome>toPublicHomePage</from-outcome>
             <to-view-id>/public/home.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
@@ -18,12 +18,16 @@
             <to-view-id>/public/events.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
-            <from-outcome>toPrivateResources</from-outcome>
+            <from-outcome>toPrivateHomePage</from-outcome>
             <to-view-id>/private/home.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>toMandatePage</from-outcome>
             <to-view-id>/private/mandate.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>toDriverFinderPage</from-outcome>
+            <to-view-id>/private/driver-finder.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 </faces-config>

@@ -1,7 +1,7 @@
 package api.readmodel;
 
-import api.exception.UserNotActiveException;
-import api.exception.repository.UserNotFoundException;
+import api.exception.repository.user.UserNotActiveException;
+import api.exception.repository.user.UserNotFoundException;
 import readmodel.SimpleUserDataVO;
 import readmodel.UserEventsWithPointsVO;
 

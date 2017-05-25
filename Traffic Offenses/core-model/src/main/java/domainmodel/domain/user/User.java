@@ -31,55 +31,60 @@ public class User extends AggregateRoot{
     @Column(unique = true)
     private String pesel;
 
+    private String password;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
-//    private String role;
-
     @Embedded
     private DrivingLicense drivingLicense;
 
-    private String password;
 
 
     public User() {
     }
-    public User(String firstName, String lastName, String email, String pesel) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.pesel = pesel;
-        this.password=pesel;
-    }
 
-
-    public UserData generateUserData(){
-//        String drivingLicenseNumber  = drivingLicense.getLicenseNumber();
-        return new UserData(aggregateId, firstName, lastName, pesel, null);
+    private User(UserBuilder userBuilder){
+        this.firstName = userBuilder.firstName;
+        this.lastName = userBuilder.lastName;
+        this.email = userBuilder.email;
+        this.password = userBuilder.password;
+        this.pesel = userBuilder.pesel;
+        this.userRoles = userBuilder.userRoles;
+        this.drivingLicense = userBuilder.drivingLicense;
     }
-//
-    public void addUserRole(UserRole role){
-       this.userRoles.add(role);
-    }
-
-//    public void setUserRole(String role){
-//        this.role = role;
+//    public User(String firstName, String lastName, String email, String pesel) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.pesel = pesel;
 //    }
-//
-//    public String getUserRole(){
-//        return this.role;
-//    }
+
+
+    public UserData generateUserData() throws NullDrivingLicenseException {
+        if(drivingLicense == null)
+            throw new NullDrivingLicenseException("user with id = " + this.aggregateId + "does not have drivingLicense");
+        String drivingLicenseNumber  = drivingLicense.getLicenseNumber();
+        return new UserData(aggregateId, firstName, lastName, pesel, drivingLicenseNumber);
+    }
+
+    public void addUserRole(Role role){
+       this.userRoles.add(new UserRole(role.toString()));
+    }
 
 
     public void addDrivingLicense(DrivingLicense drivingLicense){
         this.drivingLicense = drivingLicense;
     }
 
+    public void setUserPassword(String password){
+        this.password = password;
+    }
 
     public String getPassword(){
         return password;
     }
+
     public String getFirstName() {
         return firstName;
     }
@@ -100,38 +105,60 @@ public class User extends AggregateRoot{
         return Collections.unmodifiableCollection(userRoles);
     }
 
-//    public DrivingLicense getDrivingLicense(){
-//        return drivingLicense;
-//
-  public String getLicenseNumber() throws NullDrivingLicenseException {
+    public DrivingLicense getDrivingLicense() throws NullDrivingLicenseException {
         if(drivingLicense == null)
             throw new NullDrivingLicenseException("user with id = " + this.aggregateId + "does not have drivingLicense");
-        return drivingLicense.getLicenseNumber();
+        return drivingLicense;
     }
 
 
-    public Date getCreateLicenseDate() throws NullDrivingLicenseException {
-        if(drivingLicense == null)
-            throw new NullDrivingLicenseException("user with id = " + this.aggregateId + "does not have drivingLicense");
-        return drivingLicense.getCreateLicenseDate();
-    }
+    public static class UserBuilder{
 
-    public DrivingLicense.DrivingLicenseStatus getLicenseStatus() throws NullDrivingLicenseException {
-        if(drivingLicense == null)
-            throw new NullDrivingLicenseException("user with id = " + this.aggregateId + "does not have drivingLicense");
-        return drivingLicense.getStatus();
-    }
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String pesel;
+        private Set<UserRole> userRoles = new HashSet<UserRole>();
+        private DrivingLicense drivingLicense;
+        private String password;
 
-    public void changeDrivingLicenseStatus(DrivingLicense.DrivingLicenseStatus status) throws NullDrivingLicenseException {
-        if(drivingLicense == null)
-            throw new NullDrivingLicenseException("user with id = " + this.aggregateId + "does not have drivingLicense");
-        this.drivingLicense.changeStatus(status);
-    }
+        public UserBuilder(String firstName, String lastName, String email, String pesel) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.email = email;
+            this.pesel = pesel;
+            this.userRoles.add(new UserRole(Role.ROLE_PUBLIC.toString()));
+            this.password = pesel;
 
-    public boolean licenseIsActive() throws NullDrivingLicenseException {
-        if(drivingLicense == null)
-            throw new NullDrivingLicenseException("user with id = " + this.aggregateId + "does not have drivingLicense");
-        return (drivingLicense.getStatus() == DrivingLicense.DrivingLicenseStatus.ACTIVE);
+            }
+
+//        public UserBuilder password(String password){
+//            this.password = (password);
+//            return this;
+//        }
+
+        public UserBuilder drivingLicense(DrivingLicense drivingLicense){
+            this.drivingLicense = drivingLicense;
+            return this;
+        }
+
+        public UserBuilder administratorRole(String password){
+            this.password = (password);
+            this.userRoles.add(new UserRole(Role.ROLE_PRIVATE.toString()));
+            return this;
+        }
+
+        public UserBuilder privateRole(String password){
+            this.password = (password);
+            this.userRoles.add(new UserRole(Role.ROLE_PRIVATE.toString()));
+            return this;
+        }
+
+        public User build(){
+            User user = new User(this);
+            return user;
+        }
+
     }
 
 
