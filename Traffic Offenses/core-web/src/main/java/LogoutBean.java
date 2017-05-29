@@ -1,11 +1,10 @@
-import api.querymodel.manager.UserAccountInteface;
+import api.commandmodel.UserAccountInteface;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.io.Serializable;
 

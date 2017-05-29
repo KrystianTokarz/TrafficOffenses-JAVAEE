@@ -1,7 +1,7 @@
 
 import api.exception.repository.user.UserNotActiveException;
 import api.exception.repository.user.UserNotFoundException;
-import api.readmodel.PublicUserDataFinder;
+import api.querymodel.PublicUserDataFinder;
 import readmodel.SimpleUserDataVO;
 import domainmodel.embaddable.DrivingLicense;
 import exception.NullDrivingLicenseException;

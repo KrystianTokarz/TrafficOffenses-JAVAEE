@@ -1,6 +1,6 @@
 import api.exception.repository.user.UserNotActiveException;
 import api.exception.repository.user.UserNotFoundException;
-import api.readmodel.PublicUserDataFinder;
+import api.querymodel.PublicUserDataFinder;
 import domainmodel.domain.event.Event;
 import readmodel.UserEventsWithPointsVO;
 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Traffic Offenses</title>
+    <style type="text/css">
+        .background-class{
+            background-image: url("#{resource['img/admin-bg.png']}");
+            background-repeat: repeat;
+
+        }
+    </style>
+    <h:outputStylesheet name="css/style.css"  />
+</h:head>
+<h:body styleClass="background-class">
+    <p:menubar>
+        <p:menuitem value="Traffic Offenses" url="http://localhost:8080/core-web/"/>
+
+        <p:submenu label="Menu" icon="ui-icon-document">
+            <p:menuitem  value="Strefa publiczna" outcome="toPublicHomePage"/>
+            <p:menuitem  value="Dodaj użytkownika" outcome="toDriverFinderPage"/>
+            <p:menuitem  value="Dodaj nowe prawa" outcome="toMandatePage"/>
+            <p:menuitem  value="Edytuj użytkownika" outcome="toMandatePage"/>
+        </p:submenu>
+
+
+        <f:facet name="options">
+            <h:form>
+                <p:commandButton value="Wyloguj się" action="#{logoutBean.logout}"/>
+            </h:form>
+        </f:facet>
+    </p:menubar>
+
+
+
+
+
+    <div class="container admin-select-container">
+        <h2>Strona główna administratora systemy</h2>
+        <div class="admin-user-button">
+            <p:button outcome="toAddNewUserPage" value="Dodaj użytkownika" icon="ui-icon-plus"/>
+        </div>
+        <div class="admin-user-button">
+            <p:button outcome="toDriverFinderPage" value="Dodaj nowe prawa użytkownikowi" icon="ui-icon-plus"/>
+        </div>
+        <div class="admin-user-button">
+            <p:button outcome="toDriverFinderPage" value="Edytuj dane użytkownika" icon="ui-icon-refresh"/>
+        </div>
+    </div>
+
+
+    <div id="footer">Projekt Aplikacji Internetowej JAVA EE </div>
+</h:body>
+</html>
+
+

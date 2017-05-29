@@ -144,7 +144,7 @@ public class User extends AggregateRoot{
 
         public UserBuilder administratorRole(String password){
             this.password = (password);
-            this.userRoles.add(new UserRole(Role.ROLE_PRIVATE.toString()));
+            this.userRoles.add(new UserRole(Role.ROLE_ADMINISTRATOR.toString()));
             return this;
         }
 

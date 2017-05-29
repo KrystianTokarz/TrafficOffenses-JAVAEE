@@ -23,7 +23,8 @@
         <p:menuitem value="Traffic Offenses" url="http://localhost:8080/core-web/"/>
 
         <p:submenu label="Menu" icon="ui-icon-document">
-            <p:menuitem  value="Private" rendered="#{facesContext.externalContext.isUserInRole('ROLE_PRIVATE')}" outcome="toPrivateHomePage"/>
+            <p:menuitem  value="Strefa prywatna" rendered="#{facesContext.externalContext.isUserInRole('ROLE_PRIVATE')}" outcome="toPrivateHomePage"/>
+            <p:menuitem  value="Strefa administratoracyjna" rendered="#{facesContext.externalContext.isUserInRole('ROLE_ADMINISTRATOR')}" outcome="toAdministratorHomePage"/>
             <p:menuitem  value="Eventy" outcome="toEventsPage"/>
         </p:submenu>
 
@@ -52,7 +53,7 @@
             <p:column style="font-weight: bold;">Pesel</p:column>
             <p:column > #{userData.pesel}</p:column>
 
-            <p:column style="font-weight: bold;">E-mail</p:column>
+            <p:column style="font-weight: bold;">E-mail </p:column>
             <p:column > #{userData.email}</p:column>
 
         </p:panelGrid>

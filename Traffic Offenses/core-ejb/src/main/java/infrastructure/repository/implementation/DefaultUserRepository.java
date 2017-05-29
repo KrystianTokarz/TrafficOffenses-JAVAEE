@@ -9,7 +9,7 @@ import domainmodel.domain.user.User;
 import javax.ejb.Stateless;
 import java.util.List;
 
-@Stateless
+@Stateless(name = "defaultUserRepository")
 public class DefaultUserRepository extends GenericRepository<User> implements UserRepository{
 
     public User findUserByPeselAndDrivingLicenseNumber(String pesel, String licenseNumber) throws UserNotFoundException,
