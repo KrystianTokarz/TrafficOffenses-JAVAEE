@@ -18,6 +18,7 @@ public class AuthenticationBean implements Serializable{
         externalContext.redirect(externalContext.getRequestContextPath() + LOGOUT_REDIRECT_PAGE);
     }
 
+
     public String getUserPesel() {
         ExternalContext externalContext = externalContext();
         return (String) externalContext.getRemoteUser();

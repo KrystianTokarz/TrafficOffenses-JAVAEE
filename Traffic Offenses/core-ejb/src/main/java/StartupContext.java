@@ -68,7 +68,9 @@ public class StartupContext {
                 .drivingLicense(new DrivingLicense("00000/00/0000",new Date(), DrivingLicense.DrivingLicenseStatus.ACTIVE))
                 .administratorRole("haslo")
                 .build();
-
+        userRepository.persist(user);
+        userRepository.persist(user2);
+        userRepository.persist(user3);
 
         Event event1 = new Event(user.generateUserData(), EventType.MANDATE,0l);
         EventItem eventItem1 = new EventItem(EventItemType.SPEED_LIMIT_10, 100,EventItemType.SPEED_LIMIT_10.getPoints());
@@ -82,9 +84,8 @@ public class StartupContext {
         event2.addEventItem(eventItem3);
         event2.addEventItem(eventItem4);
 
-        userRepository.persist(user);
-        userRepository.persist(user2);
-        userRepository.persist(user3);
+
+
         eventRepository.persist(event1);
         eventRepository.persist(event2);
 

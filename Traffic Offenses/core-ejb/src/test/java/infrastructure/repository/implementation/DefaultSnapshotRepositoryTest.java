@@ -63,11 +63,11 @@ public class DefaultSnapshotRepositoryTest {
         rut.persist(firstSnapshot);
         rut.persist(secondSnapshot);
         em.flush();
-        Snapshot snapshotInDatabsae = rut.findLastSnapshot(userId);
+        Snapshot snapshotInDatabasae = rut.findLastSnapshot(userId);
         em.getTransaction().commit();
 
-        assertNotNull(snapshotInDatabsae);
-        assertThat(snapshotInDatabsae.getEventVersion()).isEqualTo(secondSnapshot.getEventVersion());
+        assertNotNull(snapshotInDatabasae);
+        assertThat(snapshotInDatabasae.getEventVersion()).isEqualTo(secondSnapshot.getEventVersion());
     }
 
     @Test(expected = SnapshotNotFoundException.class)
@@ -78,18 +78,6 @@ public class DefaultSnapshotRepositoryTest {
 
     }
 
-//    @Test(expected = SnapshotNotActiveException.class)
-//    public void testFindLastSnapshotThrowSnapshotNotActiveException() throws Exception{
-//        Long userId = 1l;
-//        SnapshotEntity secondSnapshot = new SnapshotEntity(0, 999l, new UserData(userId,"","","",""));
-//        em.getTransaction().begin();
-//        rut.persist(secondSnapshot);
-//        rut.delete(secondSnapshot.getAggregateRootEntityId());
-//        em.flush();
-//        rut.findLastSnapshot(1l);
-//        em.getTransaction().commit();
-
-//    }
 
 
     @Test

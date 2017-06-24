@@ -67,7 +67,6 @@
                             <context-root>/tf-private</context-root>
                         </webModule>
                     </modules>
-
                 </configuration>
             </plugin>
         </plugins>

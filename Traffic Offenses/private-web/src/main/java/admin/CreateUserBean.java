@@ -60,7 +60,6 @@ public class CreateUserBean{
 
 
     public void savePublicUser(){
-        System.out.println(licenseStatus);
         SavePublicUserCommand command = new SavePublicUserCommand(firstName,
                 lastName,email,pesel,licenseNumber,licenseCreationDate,licenseStatus);
 

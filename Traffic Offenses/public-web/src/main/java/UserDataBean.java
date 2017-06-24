@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,21 +35,18 @@ public class UserDataBean implements Serializable {
 
 
     @PostConstruct
-    public void init(){
+    public void init() throws UserNotFoundException, UserNotActiveException {
         String pesel = authenticationBean.getUserPesel();
-            try {
-                userData = publicUserFinder.findSimpleUserData(pesel);
-            } catch (UserNotFoundException e) {
-                e.printStackTrace();
-            } catch (UserNotActiveException e) {
-                e.printStackTrace();
-            }
+        userData = publicUserFinder.findSimpleUserData(pesel);
+        checkUserDrivingLicense();
+    }
 
-            try {
-                drivingLicense = userData.getUser().getDrivingLicense();
-            } catch (NullDrivingLicenseException e) {
-                userHasDrivingLicense = false;
-            }
+    private void checkUserDrivingLicense(){
+        try {
+            drivingLicense = userData.getUser().getDrivingLicense();
+        } catch (NullDrivingLicenseException e) {
+            userHasDrivingLicense = false;
+        }
     }
     public AuthenticationBean getAuthenticationBean() {
         return authenticationBean;

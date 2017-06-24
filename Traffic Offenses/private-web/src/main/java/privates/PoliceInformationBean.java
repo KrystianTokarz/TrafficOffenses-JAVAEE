@@ -4,6 +4,7 @@ import api.exception.repository.user.UserNotActiveException;
 import api.exception.repository.user.UserNotFoundException;
 import api.querymodel.PrivateUserDataFinder;
 import custom.code.MessageCode;
+import domainmodel.embaddable.DrivingLicense;
 import exception.NullDrivingLicenseException;
 import privates.backing.DriverInformationBean;
 
@@ -43,6 +44,8 @@ public class PoliceInformationBean implements Serializable{
 
     private static final String MANDATE_PAGE = "mandate.xhtml?faces-redirect=true";
 
+    private boolean userHasDrivingLicense = false;
+
 
 
     public String giveMandateToUser(){
@@ -63,6 +66,7 @@ public class PoliceInformationBean implements Serializable{
         try {
             drivingLicense = "";
             userDataWithPointsVO = privateUserDataFinder.findDriverDataWithTheirPointsByPesel(pesel);
+            getSearchedDrivingLicenseStatus();
         } catch (UserNotFoundException e) {
             showSearchedUserIsNotFound();
         } catch (UserNotActiveException e) {
@@ -74,6 +78,7 @@ public class PoliceInformationBean implements Serializable{
         try {
             pesel = "";
             userDataWithPointsVO = privateUserDataFinder.findDriverDataWithTheirPointsByDrivingLicense(drivingLicense);
+            getSearchedDrivingLicenseStatus();
         } catch (UserNotFoundException e) {
             showSearchedUserIsNotFound();
         } catch (UserNotActiveException e) {
@@ -111,24 +116,24 @@ public class PoliceInformationBean implements Serializable{
             return String.valueOf(userDataWithPointsVO.getNumberOfPoints());
     }
 
-    public String getSearchedDriverLicenseNumber(){
-        try {
-            return userDataWithPointsVO.getUser().getDrivingLicense().getLicenseNumber();
-        } catch (NullDrivingLicenseException e) {
-            return returnNoLicenseBundleString();
-        }
+    public String getSearchedDriverLicenseNumber() throws NullDrivingLicenseException {
+//        try {
+        return userDataWithPointsVO.getUser().getDrivingLicense().getLicenseNumber();
+
     }
 
-    private String returnNoLicenseBundleString(){
-        ResourceBundle bundle = resourceBundleBean.getBundle();
-        return bundle.getString("information-code.NO_DRIVING_LICENSE ");
+    public DrivingLicense.DrivingLicenseStatus getSearchedDriverLicenseStatus() throws NullDrivingLicenseException {
+
+        return userDataWithPointsVO.getUser().getDrivingLicense().getStatus();
     }
 
-    public String getSearchedDrivingLicenseStatus(){
+
+    private void getSearchedDrivingLicenseStatus(){
         try {
-            return userDataWithPointsVO.getUser().getDrivingLicense().getStatus().name();
+            userDataWithPointsVO.getUser().getDrivingLicense().getStatus().name();
+            userHasDrivingLicense = true;
         } catch (NullDrivingLicenseException e) {
-            return null;
+            userHasDrivingLicense = false;
         }
     }
 
@@ -159,5 +164,13 @@ public class PoliceInformationBean implements Serializable{
 
     public void setResourceBundleBean(ResourceBundleBean resourceBundleBean) {
         this.resourceBundleBean = resourceBundleBean;
+    }
+
+    public boolean isUserHasDrivingLicense() {
+        return userHasDrivingLicense;
+    }
+
+    public void setUserHasDrivingLicense(boolean userHasDrivingLicense) {
+        this.userHasDrivingLicense = userHasDrivingLicense;
     }
 }

@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -33,16 +34,10 @@ public class UserEventsBean implements Serializable {
 
 
     @PostConstruct
-    public void init(){
+    public void init() throws UserNotFoundException, UserNotActiveException {
         pesel = authenticationBean.getUserPesel();
+        userEventsWithPoints = publicUserFinder.findUserEvents(pesel);
 
-        try {
-            userEventsWithPoints = publicUserFinder.findUserEvents(pesel);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        } catch (UserNotActiveException e) {
-            e.printStackTrace();
-        }
     }
 
     public boolean userCanLoadOldEvents(){
@@ -68,15 +63,9 @@ public class UserEventsBean implements Serializable {
         return userEventsWithPoints.getNumberOfPoints();
     }
 
-    public void loadEventsAfterSelectedVersion(){
+    public void loadEventsAfterSelectedVersion() throws UserNotFoundException, UserNotActiveException {
         long version = userEventsWithPoints.getSnapshotVersion() -1;
-        try {
-            userEventsWithPoints = publicUserFinder.findEventsAfterSelectedVersion(pesel, version);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        } catch (UserNotActiveException e) {
-            e.printStackTrace();
-        }
+        userEventsWithPoints = publicUserFinder.findEventsAfterSelectedVersion(pesel, version);
     }
 
     public AuthenticationBean getAuthenticationBean() {

@@ -83,14 +83,15 @@
                     <p:column colspan="2">#{msg['private.driver-finder.driver-info']}</p:column>
                 </f:facet>
 
-                <p:column style="font-weight: bold;">#{msg['private.driver-finder.current-events-point']}</p:column>
-                <p:column >#{policeInformationBean.searchedNumberOfPoints}</p:column>
+                <p:column rendered="#{policeInformationBean.userHasDrivingLicense == true}" style="font-weight: bold;">#{msg['private.driver-finder.current-events-point']}</p:column>
+                <p:column rendered="#{policeInformationBean.userHasDrivingLicense == true}" >#{policeInformationBean.searchedNumberOfPoints}</p:column>
 
-                <p:column rendered="#{ not empty policeInformationBean.searchedDrivingLicenseStatus}" style="font-weight: bold;">#{msg['private.driver-finder.license-status']}</p:column>
-                <p:column rendered="#{ not empty policeInformationBean.searchedDrivingLicenseStatus}"> #{msg['private.driver-finder.license-status-type.' += policeInformationBean.searchedDrivingLicenseStatus]}</p:column>
+                <p:column style="font-weight: bold;">#{msg['private.driver-finder.license-status']}</p:column>
+                <p:column rendered="#{policeInformationBean.userHasDrivingLicense == false}"> #{msg['information-code.NO_DRIVING_LICENSE']}</p:column>
+                <p:column rendered="#{policeInformationBean.userHasDrivingLicense == true}"> #{msg['private.driver-finder.license-status-type.' += policeInformationBean.searchedDriverLicenseStatus]}</p:column>
 
-                <p:column style="font-weight: bold;">#{msg['private.driver-finder.driving-license-number']}</p:column>
-                <p:column > #{policeInformationBean.searchedDriverLicenseNumber}</p:column>
+                <p:column rendered="#{policeInformationBean.userHasDrivingLicense == true}" style="font-weight: bold;">#{msg['private.driver-finder.driving-license-number']}</p:column>
+                <p:column rendered="#{policeInformationBean.userHasDrivingLicense == true}" > #{policeInformationBean.searchedDriverLicenseNumber}</p:column>
 
                 <p:column style="font-weight: bold;">#{msg['private.driver-finder.pesel']}</p:column>
                 <p:column > #{policeInformationBean.searchedDriverPesel} </p:column>
@@ -110,7 +111,7 @@
 
     <h:panelGroup styleClass="container" id="mandate-button">
         <h:form  styleClass="inline-block-element">
-            <p:commandButton  rendered="#{policeInformationBean.hideOrShowDriverInformation() == true}" value="#{msg['private.driver-finder.add-mandate']}"  action="#{policeInformationBean.giveMandateToUser}" />
+            <p:commandButton disabled="#{policeInformationBean.userHasDrivingLicense == false}" rendered="#{policeInformationBean.hideOrShowDriverInformation() == true }" value="#{msg['private.driver-finder.add-mandate']}"  action="#{policeInformationBean.giveMandateToUser}" />
         </h:form>
     </h:panelGroup >
 

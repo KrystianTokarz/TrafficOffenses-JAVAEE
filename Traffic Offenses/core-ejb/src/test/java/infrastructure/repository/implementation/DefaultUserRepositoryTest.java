@@ -93,21 +93,6 @@ public class DefaultUserRepositoryTest {
         em.getTransaction().commit();
     }
 
-    @Test(expected = AggregateNotActiveException.class)
-    public void loadTestShouldThrowAggregateNotActiveException() throws Exception{
-
-        User user = new User.UserBuilder("firstName", "lastName", "properties", "pesel4").build();
-
-        em.getTransaction().begin();
-        rut.persist(user);
-        em.flush();
-        rut.delete(user.getAggregateRootEntityId());
-        em.flush();
-        rut.load(user.getAggregateRootEntityId());
-        em.getTransaction().commit();
-    }
-
-
 
     @Test
     public void shouldDeleteUser() throws Exception{
