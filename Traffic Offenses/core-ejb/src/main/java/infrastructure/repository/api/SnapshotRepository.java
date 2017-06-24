@@ -13,15 +13,15 @@ import javax.ejb.Local;
 @Local
 public interface SnapshotRepository {
 
-    Snapshot load(Long aggregateId) throws AggregateNotFoundException, AggregateNotActiveException;
+    Snapshot load(Long aggregateId) throws AggregateNotFoundException;
 
     void persist(SnapshotEntity snapshot);
 
     Snapshot merge(SnapshotEntity snapshot);
 
-    void delete(Long aggregateId) throws AggregateNotFoundException, AggregateNotActiveException;
+    void delete(Long aggregateId) throws AggregateNotFoundException;
 
-    Snapshot findLastSnapshot(Long userId) throws SnapshotNotFoundException, SnapshotNotActiveException;
+    Snapshot findLastSnapshot(Long userId) throws SnapshotNotFoundException;
 
     Snapshot findSnapshotWithEventVersion(Long userId, Long version) throws SnapshotWithVersionNotFoundException, SnapshotWithVersionNotActiveException;
 

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:custom="http://traffic-offenses.com/component">
+<f:view locale="#{languageBean.locale}" encoding="UTF-8" contentType="text/html">
+<h:head>
+    <title>Traffic Offenses</title>
+    <h:outputStylesheet name="css/style.css"  />
+</h:head>
+<h:body styleClass="background-class">
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Traffic Offenses" outcome="/home/home.xhtml"/>
+            <p:submenu label="#{msg['application.language']}" icon="fa fa-language">
+                <p:menuitem value="#{msg['application.polish']}" actionListener="#{languageBean.setLanguage('pl')}" icon="fa fa-angle-right" update="@all"/>
+                <p:menuitem value="#{msg['application.english']}" actionListener="#{languageBean.setLanguage('en')}" icon="fa fa-angle-right" update="@all"/>
+            </p:submenu>
+            <p:submenu label="Menu" icon="ui-icon-document">
+                <p:menuitem  value="#{msg['home.home-page']}" outcome="toHomePage"/>
+                <p:menuitem  value="#{msg['home-admin.add-user']}" outcome="toAddNewUserPage"/>
+                <p:menuitem  value="#{msg['home-admin.add-new-role']}" outcome="toAddNewRolePage"/>
+                <p:menuitem  value="#{msg['home-admin.edit-user']}" outcome="toUserListPage"/>
+            </p:submenu>
+
+            <f:facet name="options">
+                <h:form>
+                    <p:commandButton value="#{msg['application.logout']}" action="#{authenticationBean.logout}"/>
+                </h:form>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+
+    <div class="container">
+        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+        <h:form id="user-roles-form">
+            <h3>Wpisz pesel użytkownika któremu chcesz dodać nowe prawa</h3>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="pesel" value="Pesel użytkownika :" />
+                <custom:custom-input  id="pesel" value="#{userRolesBean.pesel}" required="true"/>
+                <p:commandButton value="Wyszukaj" action="#{userRolesBean.searchUserByPesel}" update="add-user-form"/>
+            </h:panelGrid>
+        </h:form>
+    </div>
+    <h:form id="add-user-form">
+    <div class="container">
+        <h:panelGroup class="container" id="user-information-container"  >
+            <p:panelGrid  id="user-information-panel" columns="2" layout="grid" class="table-information" rendered="#{not empty userRolesBean.user}">
+                <f:facet name="header">
+                    <p:column colspan="2">Podstawowe informacje o użytkowniku</p:column>
+                </f:facet>
+
+                <p:column style="font-weight: bold;">Imię: </p:column>
+                <p:column >#{userRolesBean.user.firstName}</p:column>
+
+                <p:column style="font-weight: bold;">Nazwisko</p:column>
+                <p:column > #{userRolesBean.user.lastName}</p:column>
+
+                <p:column style="font-weight: bold;">Pesel</p:column>
+                <p:column > #{userRolesBean.user.pesel}</p:column>
+
+                <p:column style="font-weight: bold;">E-mail </p:column>
+                <p:column > #{userRolesBean.user.email}</p:column>
+
+            </p:panelGrid>
+
+            <p:panelGrid  id="user-information-roles" columns="4" layout="grid" class="table-information" rendered="#{not empty userRolesBean.user}">
+                <f:facet name="header">
+                    <p:column colspan="4">Role użytkownika</p:column>
+                </f:facet>
+
+                <p:column><h:outputText value="Prywatna" /></p:column>
+
+                <p:column rendered="#{userRolesBean.hasPrivateRole()}"><h:outputText value="Posiada" /></p:column>
+                <p:column rendered="#{!userRolesBean.hasPrivateRole()}"><h:outputText value="Nie posiada" /></p:column>
+                <p:column>
+                         <p:commandButton disabled="#{userRolesBean.hasPrivateRole()}" actionListener="#{userRolesBean.addSelectedRole('ROLE_PRIVATE')}" update="add-user-form user-information-roles"  icon="ui-icon-plus" title="Add" />
+                </p:column>
+                <p:column>
+                        <p:commandButton disabled="#{!userRolesBean.hasPrivateRole()}" actionListener="#{userRolesBean.deleteSelectedRole('ROLE_PRIVATE')}" update="add-user-form user-information-roles" icon="ui-icon-minus" title="Add" />
+
+                </p:column>
+                <p:column> <h:outputText value="Administrator" /></p:column>
+                <p:column rendered="#{userRolesBean.hasAdministrator()}"><h:outputText value="Posiada" /></p:column>
+                <p:column rendered="#{!userRolesBean.hasAdministrator()}"><h:outputText value="Nie posiada" /></p:column>
+                <p:column>
+                        <p:commandButton disabled="#{userRolesBean.hasAdministrator()}" actionListener="#{userRolesBean.addSelectedRole('ROLE_ADMINISTRATOR')}" update="add-user-form user-information-roles" icon="ui-icon-plus" title="Add" />
+                </p:column>
+                <p:column>
+                        <p:commandButton disabled="#{!userRolesBean.hasAdministrator()}" actionListener="#{userRolesBean.deleteSelectedRole('ROLE_ADMINISTRATOR')}" update="add-user-form  user-information-roles" icon="ui-icon-minus" title="Add" />
+                </p:column>
+                <p:column> <h:outputText value="Publiczna" /></p:column>
+                <p:column> <h:outputText value="Posiada" /></p:column>
+                <p:column>  <p:commandButton disabled="true" icon="ui-icon-plus" title="Add" /></p:column>
+                <p:column>  <p:commandButton disabled="true" icon="ui-icon-minus" title="Add" /></p:column>
+
+
+            </p:panelGrid>
+      </h:panelGroup>
+    </div>
+    </h:form>
+
+
+    <div id="footer">#{msg['application.footer']}</div>
+</h:body>
+</f:view>
+</html>
+
+

@@ -8,7 +8,7 @@ import java.util.Date;
 public class DrivingLicense implements Serializable{
 
     public enum DrivingLicenseStatus{
-        ACTIVE,TEMPORARY_INACTIVE, PERMAMENT_INACTIVE
+        ACTIVE,TEMPORARY_INACTIVE, PERMANENT_INACTIVE
     }
 
     @Column(unique = true)
@@ -36,6 +36,18 @@ public class DrivingLicense implements Serializable{
 
     public DrivingLicenseStatus getStatus() {
         return status;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
+    public void setCreateLicenseDate(Date createLicenseDate) {
+        this.createLicenseDate = createLicenseDate;
+    }
+
+    public void setStatus(DrivingLicenseStatus status) {
+        this.status = status;
     }
 
     public void changeStatus(DrivingLicenseStatus status) {

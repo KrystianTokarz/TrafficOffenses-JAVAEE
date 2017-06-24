@@ -3,7 +3,7 @@ package infrastructure.repository.api;
 
 import api.exception.repository.AggregateNotActiveException;
 import api.exception.repository.AggregateNotFoundException;
-import api.exception.repository.event.EventsNotFoundException;
+import api.exception.repository.event.EventsAfterSelectedVersionNotFoundException;
 import api.exception.repository.event.EventsWithVersionNotFoundException;
 import domainmodel.domain.event.Event;
 
@@ -23,5 +23,6 @@ public interface EventRepository {
 
     List<Event> findEventsWithVersion(Long userId, Long version ) throws EventsWithVersionNotFoundException;
 
-    List<Event> findEvents(Long userId) throws EventsNotFoundException;
+    List<Event> findEventsWithAndAfterSelectedVersion(Long userId, Long version ) throws EventsAfterSelectedVersionNotFoundException;
+
 }

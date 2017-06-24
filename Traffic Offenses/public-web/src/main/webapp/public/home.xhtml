@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{languageBean.language}" encoding="UTF-8" contentType="text/html">
+<h:head>
+    <title>Traffic Offenses</title>
+    <h:outputStylesheet name="css/style.css"/>
+</h:head>
+<h:body styleClass="background-class">
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Traffic Offenses" outcome="/public/home.xhtml" />
+            <p:submenu label="#{msg['application.language']}" icon="fa fa-language">
+                <p:menuitem value="#{msg['application.polish']}" actionListener="#{languageBean.setLanguage('pl')}" icon="fa fa-angle-right" update="@all"/>
+                <p:menuitem value="#{msg['application.english']}" actionListener="#{languageBean.setLanguage('en')}" icon="fa fa-angle-right" update="@all"/>
+            </p:submenu>
+            <p:submenu label="Menu" icon="ui-icon-document">
+                <p:menuitem value="#{msg['public.home-page']}" outcome="toPublicHomePage"/>
+                <p:menuitem disabled="#{userDataBean.userHasDrivingLicense == false}" value="#{msg['public.events']}" outcome="toEventsPage"/>
+            </p:submenu>
+            <f:facet name="options">
+                <h:form>
+                    <p:commandButton value="#{msg['application.logout']}" action="#{authenticationBean.logout}"/>
+                </h:form>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+    <div class="container user-information-container">
+        <h2>#{msg['public.home-page-information']}</h2>
+        <p:panelGrid columns="2" layout="grid" class="table-information">
+             <f:facet name="header">
+                <p:column colspan="2">#{msg['public.user-information']}</p:column>
+            </f:facet>
+
+            <p:column class="bold-column" >#{msg['public.name']}</p:column>
+            <p:column >#{userDataBean.firstName}</p:column>
+
+            <p:column class="bold-column" >#{msg['public.surname']}</p:column>
+            <p:column > #{userDataBean.lastName}</p:column>
+
+            <p:column class="bold-column" >#{msg['public.pesel']}</p:column>
+            <p:column > #{userDataBean.pesel}</p:column>
+
+            <p:column style="font-weight: bold;">#{msg['public.email']}</p:column>
+            <p:column > #{userDataBean.email}</p:column>
+        </p:panelGrid>
+
+        <p:panelGrid rendered="#{userDataBean.userHasDrivingLicense == true}" columns="2" layout="grid" class="table-information">
+            <f:facet name="header">
+                <p:column colspan="2">#{msg['public.user-license-information']}</p:column>
+            </f:facet>
+
+            <p:column style="font-weight: bold;">#{msg['public.license-number']}</p:column>
+            <p:column >#{userDataBean.licenseNumber}</p:column>
+
+            <p:column style="font-weight: bold;">#{msg['public.license-status']}</p:column>
+            <p:column > #{msg['public.license-status.' += userDataBean.licenseStatus]} </p:column>
+
+            <p:column style="font-weight: bold;">#{msg['public.license-creation-date']}</p:column>
+            <p:outputLabel value="#{userDataBean.creationLicenseDate}" >
+                <f:convertDateTime pattern="dd.MM.yyyy" />
+            </p:outputLabel>
+        </p:panelGrid>
+
+        <p:panelGrid rendered="#{userDataBean.userHasDrivingLicense == false}" columns="2" layout="grid" class="table-information">
+            <f:facet name="header">
+                <p:column colspan="2">#{msg['public.no-user-license']}</p:column>
+            </f:facet>
+        </p:panelGrid>
+    </div>
+
+    <div id="footer">#{msg['application.footer']}</div>
+</h:body>
+</f:view>
+</html>

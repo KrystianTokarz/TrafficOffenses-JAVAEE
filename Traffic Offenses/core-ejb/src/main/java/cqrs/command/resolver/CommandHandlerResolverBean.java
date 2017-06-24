@@ -1,12 +1,15 @@
 package cqrs.command.resolver;
 
+import cqrs.command.api.AsynchronousCommandHandler;
 import cqrs.command.api.CommandHandler;
 import cqrs.command.api.CommandHandlerResolver;
 import infrastructure.annotations.Handler;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
 import writemodel.Command;
 
 import javax.ejb.Stateful;
+import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -15,25 +18,30 @@ import java.util.Set;
 @Stateful
 public class CommandHandlerResolverBean implements CommandHandlerResolver {
 
+    private static final String REFLECTIONS_PACKAGE = "cqrs.command";
+
+    private static final String CONTEXT_LOOKUP_PREFIX = "java:module/";
+
+    @Inject
+    private Logger logger;
+
 
     @Override
-    public CommandHandler resolve(Command command) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public CommandHandler resolve(Command command) throws ClassNotFoundException {
 
         Class foundCommandClass = Class.forName(command.getClass().getName());
         String commandName = foundCommandClass.getSimpleName();
-        Reflections reflections = new Reflections("cqrs.command");
+        Reflections reflections = new Reflections(REFLECTIONS_PACKAGE);
 
-        Set<Class<?>> annotatedValidatorClasses = reflections.getTypesAnnotatedWith(Handler.class);
+        Set<Class<?>> annotatedHandlerClasses = reflections.getTypesAnnotatedWith(Handler.class);
         CommandHandler result = null;
 
-        for (Class<?> annotatedValidator : annotatedValidatorClasses) {
-            Handler annotation = annotatedValidator.getAnnotation(Handler.class);
+        for (Class<?> annotatedHandler : annotatedHandlerClasses) {
+            Handler annotation = annotatedHandler.getAnnotation(Handler.class);
             String name = annotation.name();
-
-
-
+            
             if(name.equals(commandName)) {
-                result = createCommandHandlerForSelectedCommand(annotatedValidator.getSimpleName());
+                result = createCommandHandlerForSelectedCommand(annotatedHandler.getSimpleName());
                 break;
             }
         }
@@ -41,18 +49,17 @@ public class CommandHandlerResolverBean implements CommandHandlerResolver {
     }
 
 
-    private CommandHandler createCommandHandlerForSelectedCommand(String commandHandlerClassName) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-  //default lookup pulls from jndi properties file
+    private CommandHandler createCommandHandlerForSelectedCommand(String commandHandlerClassName){
         CommandHandler commandHandler = null;
 
         try {
             Context  context = new InitialContext();
-            commandHandler = (CommandHandler) context.lookup("java:module/" +commandHandlerClassName);
+            commandHandler = (CommandHandler) context.lookup(CONTEXT_LOOKUP_PREFIX + commandHandlerClassName);
         } catch (NamingException e) {
+            logger.error("Can not create Command Handler for selected class name");
             e.printStackTrace();
         }
 
         return commandHandler;
-//        return (CommandHandler) Class.forName(validatorClassName).newInstance();
     }
 }

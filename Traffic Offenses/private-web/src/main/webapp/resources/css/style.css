@@ -1,0 +1,80 @@
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 95% !important;
+}
+
+.background-class{
+    background-image: url("#{resource['img/private-bg.png']}");
+    background-repeat: repeat;
+}
+
+.container{
+    text-align: center;
+}
+
+.welcome-one{
+    margin-top: 100px;
+}
+
+.welcome-two{
+    margin-top: 20px;
+}
+
+#login-button{
+    margin-top: 100px;
+}
+
+#footer{
+    position: fixed;
+    right: 0;
+    left: 0;
+    padding: 3px;
+    bottom: 0;
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+}
+
+.login-information-container{
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+.table-information{
+   margin: 100px 120px 50px 120px;
+}
+
+.select-container{
+    margin-top: 50px;
+}
+
+.margin-button{
+    margin-top: 50px;
+}
+.small-margin-button{
+    margin-top: 20px;
+}
+
+.inline-block-form{
+    display: inline-block;
+}
+
+
+.select-information-container{
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+
+.mandate-license-container{
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.mandate-container{
+    margin : 15px 20px 30px 30px;
+}
+
+.mandate-driver-list{
+    margin-top: 7px;
+    margin-bottom: 10px;
+}

@@ -13,7 +13,8 @@
         <module>core-model</module>
         <module>core-ejb</module>
         <module>core-api</module>
-        <module>core-web</module>
+        <module>public-web</module>
+        <module>private-web</module>
     </modules>
 
     <build>

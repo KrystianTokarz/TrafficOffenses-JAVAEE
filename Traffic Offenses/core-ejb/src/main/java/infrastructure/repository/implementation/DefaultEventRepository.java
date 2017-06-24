@@ -1,6 +1,6 @@
 package infrastructure.repository.implementation;
 
-import api.exception.repository.event.EventsNotFoundException;
+import api.exception.repository.event.EventsAfterSelectedVersionNotFoundException;
 import api.exception.repository.event.EventsWithVersionNotFoundException;
 import infrastructure.repository.api.EventRepository;
 import infrastructure.repository.GenericRepository;
@@ -20,20 +20,21 @@ public class DefaultEventRepository extends GenericRepository<Event> implements 
                 .setParameter("version", version)
                 .getResultList();
 
-        if(events == null)
+        if(events.isEmpty())
             throw new EventsWithVersionNotFoundException("Events for user with id = " + userId + " and version = " + version + " does not found");
 
         return events;
     }
 
-    public List<Event> findEvents(Long userId) throws EventsNotFoundException {
+    public List<Event> findEventsWithAndAfterSelectedVersion(Long userId, Long version) throws EventsAfterSelectedVersionNotFoundException {
 
-        List<Event> events = entityManager.createNamedQuery("Event.findAllEvents", Event.class)
+        List<Event> events = entityManager.createNamedQuery("Event.findEventsAfterSelectedVersion", Event.class)
                 .setParameter("userId", userId)
+                .setParameter("version", version)
                 .getResultList();
 
-        if(events == null)
-            throw new EventsNotFoundException("Events for user with id = " + userId + " does not found");
+        if(events.isEmpty())
+            throw new EventsAfterSelectedVersionNotFoundException("Events for user with id = " + userId + " and version >= " + version + " does not found");
 
         return events;
     }

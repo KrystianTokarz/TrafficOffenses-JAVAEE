@@ -18,28 +18,44 @@ import java.util.*;
         @NamedQuery(
                 name = "User.findUserByPesel",
                 query = "SELECT u FROM User u where u.pesel = :peselID"
+        ),
+        @NamedQuery(
+                name = "User.findUserByLicenseNumber",
+                query = "SELECT u FROM User u  where u.drivingLicense.licenseNumber = :licenseNumber"
+        ),
+        @NamedQuery(
+                name = "User.findAllActiveDrivers",
+                query = "SELECT u FROM User u where u.aggregateStatus = 'ACTIVE' and u.drivingLicense != null"
+        ),
+        @NamedQuery(
+                name = "User.deleteUserRole",
+                query = "SELECT u FROM User u where u.aggregateStatus = 'ACTIVE' and u.drivingLicense != null"
+        ),
+        @NamedQuery(
+                name = "User.findAllUser",
+                query = "SELECT u FROM User u"
         )
-
 })
 @Entity
 public class User extends AggregateRoot{
 
     private String firstName;
+
     private String lastName;
+
     private String email;
 
     @Column(unique = true)
     private String pesel;
 
     private String password;
-    @OneToMany(cascade = CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
     @Embedded
     private DrivingLicense drivingLicense;
-
-
 
     public User() {
     }
@@ -53,27 +69,31 @@ public class User extends AggregateRoot{
         this.userRoles = userBuilder.userRoles;
         this.drivingLicense = userBuilder.drivingLicense;
     }
-//    public User(String firstName, String lastName, String email, String pesel) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//        this.pesel = pesel;
-//    }
 
+    public UserData generateUserData() {
 
-    public UserData generateUserData() throws NullDrivingLicenseException {
-        if(drivingLicense == null)
-            throw new NullDrivingLicenseException("user with id = " + this.aggregateId + "does not have drivingLicense");
-        String drivingLicenseNumber  = drivingLicense.getLicenseNumber();
-        return new UserData(aggregateId, firstName, lastName, pesel, drivingLicenseNumber);
+        String drivingLicenseNumber = drivingLicense.getLicenseNumber();
+        return new UserData(aggregateId, firstName, lastName, pesel, drivingLicenseNumber,email);
     }
 
     public void addUserRole(Role role){
-       this.userRoles.add(new UserRole(role.toString()));
+       this.userRoles.add(new UserRole(role));
     }
 
+    public UserRole deleteUserRole(Role role){
+        Iterator<UserRole> iterator = this.userRoles.iterator();
+        UserRole selectedUserRole = null;
+        while (iterator.hasNext()) {
+            UserRole element = iterator.next();
+            if (element.getRole().equals(role)) {
+                selectedUserRole = element;
+                iterator.remove();
+            }
+        }
+        return selectedUserRole;
+    }
 
-    public void addDrivingLicense(DrivingLicense drivingLicense){
+    public void setDrivingLicense(DrivingLicense drivingLicense) {
         this.drivingLicense = drivingLicense;
     }
 
@@ -111,6 +131,31 @@ public class User extends AggregateRoot{
         return drivingLicense;
     }
 
+    public void changeLicenseDrivingStatus(DrivingLicense.DrivingLicenseStatus status)throws NullDrivingLicenseException {
+        if(drivingLicense == null)
+            throw new NullDrivingLicenseException("user with id = " + this.aggregateId + "does not have drivingLicense");
+        this.drivingLicense.changeStatus(status);
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public static class UserBuilder{
 
@@ -127,30 +172,26 @@ public class User extends AggregateRoot{
             this.lastName = lastName;
             this.email = email;
             this.pesel = pesel;
-            this.userRoles.add(new UserRole(Role.ROLE_PUBLIC.toString()));
-            this.password = pesel;
+            this.userRoles.add(new UserRole(Role.ROLE_PUBLIC));
+        }
 
-            }
-
-//        public UserBuilder password(String password){
-//            this.password = (password);
-//            return this;
-//        }
 
         public UserBuilder drivingLicense(DrivingLicense drivingLicense){
             this.drivingLicense = drivingLicense;
+            if(drivingLicense!=null)
+                this.password = drivingLicense.getLicenseNumber();
             return this;
         }
 
         public UserBuilder administratorRole(String password){
             this.password = (password);
-            this.userRoles.add(new UserRole(Role.ROLE_ADMINISTRATOR.toString()));
+            this.userRoles.add(new UserRole(Role.ROLE_ADMINISTRATOR));
             return this;
         }
 
         public UserBuilder privateRole(String password){
             this.password = (password);
-            this.userRoles.add(new UserRole(Role.ROLE_PRIVATE.toString()));
+            this.userRoles.add(new UserRole(Role.ROLE_PRIVATE));
             return this;
         }
 

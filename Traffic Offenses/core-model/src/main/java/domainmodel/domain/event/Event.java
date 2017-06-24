@@ -7,13 +7,14 @@ import javax.persistence.*;
 import java.util.*;
 @NamedQueries({
         @NamedQuery(
-                name = "Event.findAllEvents",
-                query = "SELECT e FROM Event e where e.userData.userAggregateRootId = :userId"
-        ),
-        @NamedQuery(
                 name = "Event.findEventsWithVersion",
                 query = "SELECT e FROM Event e where e.userData.userAggregateRootId = :userId and e.eventVersion = :version"
         ),
+        @NamedQuery(
+                name = "Event.findEventsAfterSelectedVersion",
+                query = "SELECT e FROM Event e where e.userData.userAggregateRootId = :userId " +
+                        "and e.eventVersion >= :version and e.aggregateStatus = 'ACTIVE'"
+        )
 })
 @Entity
 public class Event extends AggregateRoot {
@@ -60,7 +61,7 @@ public class Event extends AggregateRoot {
         return this.eventVersion;
     }
 
-    public EventType getEventItemType() {
+    public EventType getEventType() {
         return eventType;
     }
 
@@ -70,6 +71,14 @@ public class Event extends AggregateRoot {
                     .stream()
                     .mapToInt(e -> e.getPoints()).sum();
         return allPoints;
+    }
+
+    public Integer getAllAmount(){
+        Integer amount = 0;
+        amount += eventItems
+                .stream()
+                .mapToInt(e -> e.getAmount()).sum();
+        return amount;
     }
 
 }

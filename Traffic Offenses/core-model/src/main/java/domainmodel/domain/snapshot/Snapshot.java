@@ -13,11 +13,10 @@ public interface Snapshot{
 
      UserData getUserData();
 
-     public Long getAggregateRootEntityId();
+     Long getAggregateRootEntityId();
 
-     public void setAggregateAsRemoved();
+     void setAggregateAsRemoved();
 
-
-     public boolean isActive();
+     boolean isActive();
 
 }

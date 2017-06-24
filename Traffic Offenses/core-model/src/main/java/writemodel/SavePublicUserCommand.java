@@ -1,5 +1,7 @@
 package writemodel;
 
+import domainmodel.embaddable.DrivingLicense;
+
 import java.util.Date;
 
 public class SavePublicUserCommand implements Command {
@@ -10,12 +12,10 @@ public class SavePublicUserCommand implements Command {
     private String pesel;
     private String drivingLicenseNumber;
     private Date drivingLicenseCreationDate;
-    private String drivingLicenseStatus;
+    private DrivingLicense.DrivingLicenseStatus drivingLicenseStatus;
 
-    public SavePublicUserCommand() {
-    }
 
-    public SavePublicUserCommand(String firstName, String lastName, String email, String pesel, String drivingLicenseNumber, Date drivingLicenseCreationDate, String drivingLicenseStatus) {
+    public SavePublicUserCommand(String firstName, String lastName, String email, String pesel, String drivingLicenseNumber, Date drivingLicenseCreationDate, DrivingLicense.DrivingLicenseStatus drivingLicenseStatus) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -33,11 +33,11 @@ public class SavePublicUserCommand implements Command {
         this.drivingLicenseCreationDate = drivingLicenseCreationDate;
     }
 
-    public String getDrivingLicenseStatus() {
+    public DrivingLicense.DrivingLicenseStatus getDrivingLicenseStatus() {
         return drivingLicenseStatus;
     }
 
-    public void setDrivingLicenseStatus(String drivingLicenseStatus) {
+    public void setDrivingLicenseStatus(DrivingLicense.DrivingLicenseStatus drivingLicenseStatus) {
         this.drivingLicenseStatus = drivingLicenseStatus;
     }
 

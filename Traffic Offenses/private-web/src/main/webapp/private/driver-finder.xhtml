@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{languageBean.locale}" encoding="UTF-8" contentType="text/html">
+<h:head>
+    <title>Traffic Offenses</title>
+    <style type="text/css">
+
+    </style>
+    <h:outputStylesheet name="css/style.css"  />
+</h:head>
+<h:body styleClass="background-class">
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Traffic Offenses" outcome="/home/home.xhtml"/>
+            <p:submenu label="#{msg['application.language']}" icon="fa fa-language">
+                <p:menuitem value="#{msg['application.polish']}" actionListener="#{languageBean.setLanguage('pl')}" icon="fa fa-angle-right" update="@all"/>
+                <p:menuitem value="#{msg['application.english']}" actionListener="#{languageBean.setLanguage('en')}" icon="fa fa-angle-right" update="@all"/>
+            </p:submenu>
+            <p:submenu label="Menu" icon="ui-icon-document">
+                <p:menuitem  value="#{msg['home.home-page']}" outcome="toHomePage"/>
+                <p:menuitem  value="#{msg['home-private.add-mandate']}" outcome="toMandatePage"/>
+                <p:menuitem  value="#{msg['home-private.check-driver']}" outcome="toDriverFinderPage"/>
+            </p:submenu>
+
+
+            <f:facet name="options">
+                <h:form>
+                    <p:commandButton value="#{msg['application.logout']}" action="#{authenticationBean.logout}"/>
+                </h:form>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+    <!--<h:panelGroup id="messagePanel" layout="block">-->
+        <!--<p:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>-->
+    <!--</h:panelGroup>-->
+
+
+    <div class="container">
+        <h3>#{msg['private.driver-finder.info']}</h3>
+        <div class="select-container">
+            <h4>#{msg['private.driver-finder.pesel-info']}</h4>
+            <h:form  id="driver-information-pesel-form"  styleClass="inline-block-form">
+                <h:panelGrid columns="3">
+                    <h:outputLabel for="pesel" value="#{msg['private.driver-finder.pesel-number']}" />
+                    <p:inputMask id="pesel" name="pesel" value="#{policeInformationBean.pesel}" mask="99999999999"  validatorMessage="#{msg['private.driver-finder.search-pesel-validation']}">
+                        <f:validateLength minimum="11" maximum="11" />
+                    </p:inputMask>
+                    <p:message for="pesel" />
+                    <p:commandButton styleClass="small-margin-button" value="#{msg['private.driver-finder.confirm']}" process="@form" update="@form driver-information-license-form driver-information-container mandate-button"
+                                     action="#{policeInformationBean.findDriverByPesel}" validateClient="true"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <div class="select-container">
+            <h4>#{msg['private.driver-finder.license-info']}</h4>
+            <h:form id="driver-information-license-form" styleClass="inline-block-form" >
+                <h:panelGrid columns="3">
+
+                    <h:outputLabel for="drivingLicense"  value="#{msg['private.driver-finder.driving-license-number']}" />
+                    <p:inputMask id="drivingLicense" name="drivingLicense" value="#{policeInformationBean.drivingLicense}" mask="99999/99/9999" validatorMessage="#{msg['private.driver-finder.search-license-validation']}">
+                        <f:validateRegex pattern="\d{5}\/\d{2}\/\d{4}$"/>
+                    </p:inputMask>
+                    <p:message for="drivingLicense" />
+                    <p:commandButton styleClass="small-margin-button" value="#{msg['private.driver-finder.confirm']}" process="@form" update="@form driver-information-pesel-form driver-information-container mandate-button"
+                                     actionListener="#{policeInformationBean.findDriverByDrivingLicenseNumber}" />
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </div>
+    <div class="select-information-container">
+        <h:panelGroup class="container" id="driver-information-container" >
+
+            <p:panelGrid columns="2" layout="grid"  id="driver-information" rendered="#{policeInformationBean.hideOrShowDriverInformation() == true}">
+                <f:facet name="header">
+                    <p:column colspan="2">#{msg['private.driver-finder.driver-info']}</p:column>
+                </f:facet>
+
+                <p:column style="font-weight: bold;">#{msg['private.driver-finder.current-events-point']}</p:column>
+                <p:column >#{policeInformationBean.searchedNumberOfPoints}</p:column>
+
+                <p:column rendered="#{ not empty policeInformationBean.searchedDrivingLicenseStatus}" style="font-weight: bold;">#{msg['private.driver-finder.license-status']}</p:column>
+                <p:column rendered="#{ not empty policeInformationBean.searchedDrivingLicenseStatus}"> #{msg['private.driver-finder.license-status-type.' += policeInformationBean.searchedDrivingLicenseStatus]}</p:column>
+
+                <p:column style="font-weight: bold;">#{msg['private.driver-finder.driving-license-number']}</p:column>
+                <p:column > #{policeInformationBean.searchedDriverLicenseNumber}</p:column>
+
+                <p:column style="font-weight: bold;">#{msg['private.driver-finder.pesel']}</p:column>
+                <p:column > #{policeInformationBean.searchedDriverPesel} </p:column>
+
+                <p:column style="font-weight: bold;">#{msg['private.driver-finder.name']}</p:column>
+                <p:column > #{policeInformationBean.searchedDriverFirstName}</p:column>
+
+                <p:column style="font-weight: bold;">#{msg['private.driver-finder.surname']}</p:column>
+                <p:column > #{policeInformationBean.searchedDriverLastName} </p:column>
+            </p:panelGrid>
+        </h:panelGroup>
+    </div>
+    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+
+
+
+
+    <h:panelGroup styleClass="container" id="mandate-button">
+        <h:form  styleClass="inline-block-element">
+            <p:commandButton  rendered="#{policeInformationBean.hideOrShowDriverInformation() == true}" value="#{msg['private.driver-finder.add-mandate']}"  action="#{policeInformationBean.giveMandateToUser}" />
+        </h:form>
+    </h:panelGroup >
+
+
+
+
+    <div id="footer">#{msg['application.footer']}</div>
+</h:body>
+</f:view>
+</html>
+
+
+
+
+

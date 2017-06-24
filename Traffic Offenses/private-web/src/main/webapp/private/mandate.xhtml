@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{languageBean.locale}" encoding="UTF-8" contentType="text/html">
+<h:head>
+    <title>Traffic Offenses</title>
+    <h:outputStylesheet name="css/style.css"  />
+</h:head>
+<h:body styleClass="background-class">
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Traffic Offenses" outcome="/home/home.xhtml"/>
+            <p:submenu label="#{msg['application.language']}" icon="fa fa-language">
+                <p:menuitem value="#{msg['application.polish']}" actionListener="#{languageBean.setLanguage('pl')}" icon="fa fa-angle-right" update="@all"/>
+                <p:menuitem value="#{msg['application.english']}" actionListener="#{languageBean.setLanguage('en')}" icon="fa fa-angle-right" update="@all"/>
+            </p:submenu>
+            <p:submenu label="Menu" icon="ui-icon-document">
+                <p:menuitem  value="#{msg['home.home-page']}" outcome="toHomePage"/>
+                <p:menuitem  value="#{msg['home-private.add-mandate']}" outcome="toMandatePage"/>
+                <p:menuitem  value="#{msg['home-private.check-driver']}" outcome="toDriverFinderPage"/>
+            </p:submenu>
+
+            <f:facet name="options">
+                <h:form>
+                    <p:commandButton value="#{msg['application.logout']}" action="#{authenticationBean.logout}"/>
+                </h:form>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+
+
+
+    <h:panelGroup class="container" id="driver-information-container" >
+        <p:messages id="messages" showSummary="false" showDetail="true" autoUpdate="true" closable="true" />
+
+        <h:form id="mandate-form">
+        <div class="mandate-license-container" >
+            <h:outputLabel value="#{msg['private.mandate.driving-license-number']}" />
+            <br/>
+            <p:inputMask id="driving-license-number" disabled="#{mandateBean.hideOrShowDrivingLicenseNumberInput}"  name="drivingLicenseNumber" value="#{mandateBean.drivingLicenseNumber}" mask="99999/99/9999"  validatorMessage="#{msg['private.mandate.driver-license-validation']}">
+                <f:validateRegex pattern="\d{5}\/\d{2}\/\d{4}$"/>
+            </p:inputMask>
+        </div>
+
+        <div class="mandate-container" >
+
+            <p:dataTable id="tarrif-table" var="offense" value="#{mandateBean.roadOffensesList}"
+                         paginator="true" rowsPerPageTemplate="5,10,15" rows="10">
+                <f:facet name="header">
+                   #{msg['private.mandate.tarrif']}
+                </f:facet>
+                <p:column headerText="#{msg['private.mandate.offense-name']}">
+                    <h:outputText value="#{msg['private.mandate.event-item-typ.' += offense.name()]}" />
+                </p:column>
+                <p:column headerText="#{msg['private.mandate.offense-points']}">
+                    <h:outputText value="#{offense.points}" />
+                </p:column>
+                <p:column style="width:32px;text-align: center">
+                    <p:commandButton immediate="true" update=":mandate-form:selected-offenses-table :mandate-form:create-mandate-button" icon="ui-icon-plus" title="Add" actionListener="#{mandateBean.addSelectedRoadOffenses(offense)}"/>
+                </p:column>
+            </p:dataTable>
+
+
+            <p:dataTable styleClass="mandate-driver-list" id="selected-offenses-table" var="selectedOffense" value="#{mandateBean.selectedRoadOffensesList}">
+                <f:facet name="header">
+                    #{msg['private.mandate.driver-offenses']}
+                </f:facet>
+                <p:column headerText="#{msg['private.mandate.offense-name']}">
+                    <h:outputText value="#{msg['private.mandate.event-item-typ.' += selectedOffense.eventItemType.name()]}" />
+                </p:column>
+                <p:column headerText="#{msg['private.mandate.offense-points']}">
+                    <h:outputText value="#{selectedOffense.eventItemType.points}" />
+                </p:column>
+                <p:column headerText="#{msg['private.mandate.offense-amount']}">
+                    <h:outputText value="#{msg['private.mandate.offense-amount-from']}#{selectedOffense.eventItemType.minAmount}" />
+                    <p:inputText style="text-align: center;" id="mandate-amount" value="#{selectedOffense.amount}" required="true" validatorMessage="#{msg['private.mandate.offense-amount-validation']} #{msg['private.mandate.event-item-typ.' += selectedOffense.eventItemType.name()]}" >
+                        <f:validator validatorId="privates.custom.validator.CustomMandateAmountRangeValidator" />
+                        <f:attribute name="minimum" value="#{selectedOffense.eventItemType.minAmount}" />
+                        <f:attribute name="maximum" value="#{selectedOffense.eventItemType.maxAmount}" />
+                    </p:inputText>
+                    <h:outputText value="#{msg['private.mandate.offense-amount-to']} #{selectedOffense.eventItemType.maxAmount}" />
+                </p:column>
+                <p:column style="width:32px;text-align: center">
+                    <p:commandButton immediate="true" update="selected-offenses-table :mandate-form:create-mandate-button" icon="ui-icon-trash" title="Delete" actionListener="#{mandateBean.deleteSelectedRoadOffenses(selectedOffense)}"/>
+                </p:column>
+            </p:dataTable>
+                <p:commandButton id="create-mandate-button" disabled="#{mandateBean.canCreateMandate()}" update="mandate-form create-mandate-button selected-offenses-table"  process="@all" value="Zapisz" validateClient="true"  action="#{mandateBean.createMandate()}"/>
+
+        </div>
+        </h:form>
+
+    </h:panelGroup>
+
+
+
+    <div id="footer">#{msg['application.footer']}</div>
+</h:body>
+</f:view>
+</html>
+
+
+
+
+

@@ -2,24 +2,24 @@ package domainmodel.domain.user;
 
 import domainmodel.suport.domain.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "USER_ROLE")
 public class UserRole extends BaseEntity {
 
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public UserRole() {
     }
 
-    public UserRole(String role) {
+    public UserRole(Role role) {
         this.role = role;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 

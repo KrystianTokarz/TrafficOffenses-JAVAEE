@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{languageBean.locale}" encoding="UTF-8" contentType="text/html">
+<h:head>
+    <title>Traffic Offenses</title>
+    <h:outputStylesheet name="css/style.css"  />
+</h:head>
+<h:body styleClass="background-class">
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Traffic Offenses" outcome="/home/home.xhtml"/>
+            <p:submenu label="#{msg['application.language']}" icon="fa fa-language">
+                <p:menuitem value="#{msg['application.polish']}" actionListener="#{languageBean.setLanguage('pl')}" icon="fa fa-angle-right" update="@all"/>
+                <p:menuitem value="#{msg['application.english']}" actionListener="#{languageBean.setLanguage('en')}" icon="fa fa-angle-right" update="@all"/>
+            </p:submenu>
+            <p:submenu label="Menu" icon="ui-icon-document">
+                <p:menuitem  value="#{msg['home.home-page']}" outcome="toHomePage"/>
+                <p:menuitem  value="#{msg['home-admin.add-user']}" outcome="toAddNewUserPage"/>
+                <p:menuitem  value="#{msg['home-admin.add-new-role']}" outcome="toAddNewRolePage"/>
+                <p:menuitem  value="#{msg['home-admin.edit-user']}" outcome="toUserListPage"/>
+            </p:submenu>
+
+            <f:facet name="options">
+                <h:form>
+                    <p:commandButton value="#{msg['application.logout']}" action="#{authenticationBean.logout}"/>
+                </h:form>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+    <h:form id="user-edit-form">
+        <p:messages id="messages" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />
+        <p:dataTable styleClass="mandate-driver-list" id="users-table" var="user" value="#{userListBean.userList}"
+                     paginator="true" rowsPerPageTemplate="10,15,20" rows="15">
+            <f:facet name="header">
+               Uzytkownicy
+            </f:facet>
+            <p:column headerText="Imie">
+                <h:outputText value="#{user.firstName}" />
+            </p:column>
+            <p:column headerText="Nazwisko">
+                <h:outputText value="#{user.lastName}" />
+            </p:column>
+            <p:column headerText="Pesel">
+                <h:outputText value="#{user.pesel}" />
+            </p:column>
+            <p:column headerText="E-mail">
+                <h:outputText value="#{user.email}" />
+            </p:column>
+            <p:column headerText="Haslo">
+                <h:outputText value="#{user.password}" />
+            </p:column>
+            <p:column headerText="Status konta">
+                <h:outputText rendered="#{user.active == true}" value="Akywne" />
+                <h:outputText rendered="#{user.active == false}" value="Niektywne" />
+            </p:column>
+
+            <p:column headerText="numer prawa jazdy">
+                <h:outputText rendered="#{userListBean.checkUserHasDrivingLicense(user) == true}" value="#{user.drivingLicense.licenseNumber}" />
+                <h:outputText rendered="#{userListBean.checkUserHasDrivingLicense(user) == false}" value="brak" />
+            </p:column>
+            <p:column headerText="status prawa jazdy">
+                <h:outputText rendered="#{userListBean.checkUserHasDrivingLicense(user) == true}" value="#{user.drivingLicense.status}" />
+                <h:outputText rendered="#{userListBean.checkUserHasDrivingLicense(user) == false}" value="brak" />
+            </p:column>
+
+            <p:column headerText="data uwtorzenia prawa jazdy">
+                <h:outputText rendered="#{userListBean.checkUserHasDrivingLicense(user) == true}" value="#{user.drivingLicense.createLicenseDate}" >
+                    <f:convertDateTime pattern="dd.MM.yyyy" />
+                </h:outputText>
+                <h:outputText rendered="#{userListBean.checkUserHasDrivingLicense(user) == false}" value="brak" />
+            </p:column>
+
+            <p:column style="width:32px;text-align: center">
+                <p:commandButton disabled="#{!userListBean.checkUserIsActive(user)}" update="users-table" icon="ui-icon-trash" title="Delete" actionListener="#{userListBean.deleteSelectedUser(user)}"/>
+            </p:column>
+            <p:column style="width:32px;text-align: center">
+                <p:commandButton disabled="#{userListBean.checkUserIsActive(user)}" update="users-table" icon="ui-icon-plus" title="Delete" actionListener="#{userListBean.activeSelectedUser(user)}"/>
+            </p:column>
+            <p:column style="width:32px;text-align: center">
+                    <p:commandButton  icon="ui-icon-wrench" title="Delete" action="#{userListBean.editSelectedUser(user)}"/>
+            </p:column>
+
+
+        </p:dataTable>
+    </h:form>
+
+
+    <div id="footer">#{msg['application.footer']}</div>
+</h:body>
+</f:view>
+</html>
+
+

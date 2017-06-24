@@ -1,0 +1,22 @@
+
+<HTML>
+<HEAD>
+    <TITLE>Pet Store Sale!</TITLE>
+</HEAD>
+
+
+<BODY>
+<CENTER>
+    <h1>Witamy</h1> <br/>
+    <h2>Pan/Pani  $firstName  $lastName  </h2>
+    <BR/>
+    Dnia dzisiejszego na Pana/Pani konto został wystawiony mandat!
+    <BR/>
+    W celu sprawdzenia większej ilości informacji zapraszamy na naszą stronę oraz zachęcamy do pobrania załącznika - raportu
+    <BR/>
+    Pozdrawiamy!
+    <BR/>
+</CENTER>
+
+</BODY>
+</HTML>

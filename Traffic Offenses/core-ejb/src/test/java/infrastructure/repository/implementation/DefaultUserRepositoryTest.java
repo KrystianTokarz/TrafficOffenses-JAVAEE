@@ -7,14 +7,12 @@ import api.exception.repository.user.UserNotFoundException;
 import domainmodel.domain.user.User;
 import domainmodel.embaddable.DrivingLicense;
 import infrastructure.repository.api.UserRepository;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.transaction.Transactional;
 import java.lang.reflect.Field;
 import java.util.Date;
 
@@ -50,7 +48,7 @@ public class DefaultUserRepositoryTest {
 
     @Test
     public void shouldPersistUser() throws Exception{
-        User user = new User.UserBuilder("firstName", "lastName", "email", "pesel1").build();
+        User user = new User.UserBuilder("firstName", "lastName", "properties", "pesel1").build();
         em.getTransaction().begin();
         rut.persist(user);
         em.flush();
@@ -63,7 +61,7 @@ public class DefaultUserRepositoryTest {
 
     @Test
     public void shouldMergeUser() throws Exception{
-        User user = new User.UserBuilder("firstName", "lastName", "email", "pesel2").build();
+        User user = new User.UserBuilder("firstName", "lastName", "properties", "pesel2").build();
         em.getTransaction().begin();
         User mergeUser = rut.merge(user);
         em.getTransaction().commit();
@@ -75,7 +73,7 @@ public class DefaultUserRepositoryTest {
     @Test
     public void shouldLoadUser() throws Exception{
 
-        User user = new User.UserBuilder("firstName", "lastName", "email", "pesel3").build();
+        User user = new User.UserBuilder("firstName", "lastName", "properties", "pesel3").build();
 
         em.getTransaction().begin();
         rut.persist(user);
@@ -98,7 +96,7 @@ public class DefaultUserRepositoryTest {
     @Test(expected = AggregateNotActiveException.class)
     public void loadTestShouldThrowAggregateNotActiveException() throws Exception{
 
-        User user = new User.UserBuilder("firstName", "lastName", "email", "pesel4").build();
+        User user = new User.UserBuilder("firstName", "lastName", "properties", "pesel4").build();
 
         em.getTransaction().begin();
         rut.persist(user);
@@ -113,7 +111,7 @@ public class DefaultUserRepositoryTest {
 
     @Test
     public void shouldDeleteUser() throws Exception{
-        User user = new User.UserBuilder("firstName", "lastName", "email", "pesel5").build();
+        User user = new User.UserBuilder("firstName", "lastName", "properties", "pesel5").build();
 
         em.getTransaction().begin();
         rut.persist(user);
@@ -130,8 +128,8 @@ public class DefaultUserRepositoryTest {
 
         String pesel = "peselTest1";
         String drivingLicenseNumber = "drivingLicense1";
-        User user = new User.UserBuilder("firstName","lastName","email",pesel).build();
-        user.addDrivingLicense(new DrivingLicense(drivingLicenseNumber,new Date(), DrivingLicense.DrivingLicenseStatus.ACTIVE));
+        User user = new User.UserBuilder("firstName","lastName", "properties",pesel).build();
+        user.setDrivingLicense(new DrivingLicense(drivingLicenseNumber,new Date(), DrivingLicense.DrivingLicenseStatus.ACTIVE));
 
         em.getTransaction().begin();
         rut.persist(user);
@@ -161,8 +159,8 @@ public class DefaultUserRepositoryTest {
 
         String pesel = "peselTest2";
         String drivingLicenseNumber = "drivingLicense2";
-        User user = new User.UserBuilder("firstName","lastName","email",pesel).build();
-        user.addDrivingLicense(new DrivingLicense(drivingLicenseNumber,new Date(), DrivingLicense.DrivingLicenseStatus.ACTIVE));
+        User user = new User.UserBuilder("firstName","lastName", "properties",pesel).build();
+        user.setDrivingLicense(new DrivingLicense(drivingLicenseNumber,new Date(), DrivingLicense.DrivingLicenseStatus.ACTIVE));
 
         em.getTransaction().begin();
         rut.persist(user);
@@ -178,7 +176,7 @@ public class DefaultUserRepositoryTest {
 
         String pesel = "peselTest3";
         String drivingLicenseNumber = "drivingLicense1";
-        User user = new User.UserBuilder("firstName","lastName","email",pesel).build();
+        User user = new User.UserBuilder("firstName","lastName", "properties",pesel).build();
 
         em.getTransaction().begin();
         rut.persist(user);
@@ -205,7 +203,7 @@ public class DefaultUserRepositoryTest {
     public void findUserByPeselTestShouldThrowUserNotActiveException() throws Exception{
 
         String pesel = "peselTest4";
-        User user = new User.UserBuilder("firstName","lastName","email",pesel).build();
+        User user = new User.UserBuilder("firstName","lastName", "properties",pesel).build();
 
 
         em.getTransaction().begin();

@@ -7,7 +7,8 @@
       <module fileurl="file://$PROJECT_DIR$/core-application/core-application.iml" filepath="$PROJECT_DIR$/core-application/core-application.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-ejb/core-ejb.iml" filepath="$PROJECT_DIR$/core-ejb/core-ejb.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-model/core-model.iml" filepath="$PROJECT_DIR$/core-model/core-model.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core-web/core-web.iml" filepath="$PROJECT_DIR$/core-web/core-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/private-web/private-web.iml" filepath="$PROJECT_DIR$/private-web/private-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/public-web/public-web.iml" filepath="$PROJECT_DIR$/public-web/public-web.iml" />
     </modules>
   </component>
 </project>

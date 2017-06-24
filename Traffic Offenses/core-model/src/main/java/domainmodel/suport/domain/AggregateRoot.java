@@ -16,7 +16,7 @@ public abstract class AggregateRoot implements Serializable {
     protected Long aggregateId;
 
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private AggregateStatus aggregateStatus = AggregateStatus.ACTIVE;
 
 
@@ -26,6 +26,10 @@ public abstract class AggregateRoot implements Serializable {
 
     public void setAggregateAsRemoved(){
         aggregateStatus = AggregateStatus.INACTIVE;
+    }
+
+    public void setAggregateAsActive(){
+        aggregateStatus = AggregateStatus.ACTIVE;
     }
 
     public boolean isActive(){

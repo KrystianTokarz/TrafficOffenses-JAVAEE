@@ -17,8 +17,7 @@ import java.util.List;
 public class DefaultSnapshotRepository extends GenericRepository<SnapshotEntity> implements SnapshotRepository {
 
 
-    public Snapshot findLastSnapshot(Long userId) throws SnapshotNotFoundException,
-                                                         SnapshotNotActiveException {
+    public Snapshot findLastSnapshot(Long userId) throws SnapshotNotFoundException {
 
         List<Snapshot> snapshot = entityManager.createNamedQuery("Snapshot.findLastSnapshot", Snapshot.class)
                 .setParameter("userID", userId)
@@ -27,8 +26,6 @@ public class DefaultSnapshotRepository extends GenericRepository<SnapshotEntity>
 
         if(snapshot.isEmpty()) {
             throw new SnapshotNotFoundException("Snapshot for user with id =  " + userId + " is not found");
-        }else if(!snapshot.get(0).isActive()) {
-            throw new SnapshotNotActiveException("Snapshot for user with id =  " + userId + " is not active");
         }
         return snapshot.get(0);
     }
@@ -48,5 +45,7 @@ public class DefaultSnapshotRepository extends GenericRepository<SnapshotEntity>
         }
         return snapshot.get(0);
     }
+
+
 
 }

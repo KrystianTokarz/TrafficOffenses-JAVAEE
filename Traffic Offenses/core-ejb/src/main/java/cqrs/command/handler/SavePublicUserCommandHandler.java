@@ -1,46 +1,32 @@
 package cqrs.command.handler;
 
-import cqrs.command.api.CommandHandler;
+import api.exception.command.SynchronousCommandException;
+import cqrs.command.api.AsynchronousCommandHandler;
+import cqrs.command.api.SynchronousCommandHandler;
 import domainmodel.domain.user.User;
 import domainmodel.embaddable.DrivingLicense;
+import error.codes.ErrorCode;
 import infrastructure.annotations.Handler;
 import infrastructure.repository.api.UserRepository;
-import infrastructure.repository.implementation.DefaultUserRepository;
 import writemodel.SavePublicUserCommand;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import java.util.Date;
+import javax.persistence.EntityExistsException;
+import javax.transaction.Transactional;
 
 @Handler(name = "SavePublicUserCommand")
-@Stateless(mappedName = "SavePublicUserCommandHandler")
-public class SavePublicUserCommandHandler implements CommandHandler<SavePublicUserCommand> {
-
+@Stateless
+public class SavePublicUserCommandHandler implements SynchronousCommandHandler<SavePublicUserCommand> {
 
     @EJB
     private UserRepository userRepository;
 
+    public void handle(SavePublicUserCommand command) throws SynchronousCommandException {
 
-    public void handle(SavePublicUserCommand command) {
-
-
-        DrivingLicense.DrivingLicenseStatus drivingLicenseStatusEnum = null;
-        String drivingLicenseStatus = command.getDrivingLicenseStatus();
-        if(drivingLicenseStatus.equals("ACTIVE"))
-            drivingLicenseStatusEnum = DrivingLicense.DrivingLicenseStatus.ACTIVE;
-        else if(drivingLicenseStatus.equals("TEMPORARY_INACTIVE"))
-            drivingLicenseStatusEnum = DrivingLicense.DrivingLicenseStatus.TEMPORARY_INACTIVE;
-        else{
-            drivingLicenseStatusEnum = DrivingLicense.DrivingLicenseStatus.PERMAMENT_INACTIVE;
-        }
-
-        DrivingLicense userDrivingLicense = new DrivingLicense(command.getDrivingLicenseNumber(),
-                command.getDrivingLicenseCreationDate(),
-                drivingLicenseStatusEnum);
-
+        DrivingLicense userDrivingLicense  = new DrivingLicense(command.getDrivingLicenseNumber()
+                , command.getDrivingLicenseCreationDate(),command.getDrivingLicenseStatus());
 
         User user = new User.UserBuilder(command.getFirstName(),
                 command.getLastName(),
@@ -51,4 +37,12 @@ public class SavePublicUserCommandHandler implements CommandHandler<SavePublicUs
 
         userRepository.persist(user);
     }
+//
+//    private void persistUser(User user) throws SynchronousCommandException {
+//        try {
+//            userRepository.persist(user);
+//        } catch(EJBTransactionRolledbackException e){
+//            throw new SynchronousCommandException("Save public user persist exception", ErrorCode.SAVE_PUBLIC_USER);
+//        }
+//    }
 }

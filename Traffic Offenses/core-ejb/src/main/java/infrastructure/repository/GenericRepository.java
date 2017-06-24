@@ -20,14 +20,12 @@ public class GenericRepository<T extends AggregateRoot> {
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    public T load(Long aggregateId) throws AggregateNotFoundException, AggregateNotActiveException {
+    public T load(Long aggregateId) throws AggregateNotFoundException{
 
         T aggregate = entityManager.find(clazz, aggregateId);
 
         if(aggregate == null) {
             throw new AggregateNotFoundException("Aggregate " + clazz.getCanonicalName() + " with id =" + aggregateId + " does not exist");
-        }else if(!aggregate.isActive()) {
-            throw new AggregateNotActiveException("Aggregate " + clazz.getCanonicalName() + " with id =" + aggregateId + " is not active");
         }
         return aggregate;
 
@@ -41,7 +39,7 @@ public class GenericRepository<T extends AggregateRoot> {
         return entityManager.merge(aggregate);
     }
 
-    public void delete(Long aggregateId) throws  AggregateNotFoundException, AggregateNotActiveException {
+    public void delete(Long aggregateId) throws  AggregateNotFoundException{
         T aggregate =  load(aggregateId);
         aggregate.setAggregateAsRemoved();
     }

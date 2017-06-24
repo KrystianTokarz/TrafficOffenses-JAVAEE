@@ -14,17 +14,18 @@ public class UserData implements Serializable {
     private String lastName;
     private String pesel;
     private String licenseNumber;
+    private String email;
 
     public UserData(){
-
     }
 
-    public UserData(Long userAggregateRootId, String firstName, String lastName, String pesel, String licenseNumber) {
+    public UserData(Long userAggregateRootId, String firstName, String lastName, String pesel, String licenseNumber, String email) {
         this.userAggregateRootId = userAggregateRootId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;
         this.licenseNumber = licenseNumber;
+        this.email = email;
     }
 
     public Long getUserAggregateRootId() {
@@ -47,5 +48,7 @@ public class UserData implements Serializable {
         return licenseNumber;
     }
 
-
+    public String getEmail() {
+        return email;
+    }
 }

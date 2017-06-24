@@ -52,8 +52,8 @@ public class DefaultSnapshotRepositoryTest {
     public void shouldFindLastSnapshot() throws Exception {
 
         Long userId = 1l;
-        SnapshotEntity firstSnapshot = new SnapshotEntity(0, 0l, new UserData(userId,"","","",""));
-        SnapshotEntity secondSnapshot = new SnapshotEntity(0, 1l, new UserData(userId,"","","",""));
+        SnapshotEntity firstSnapshot = new SnapshotEntity(0, 0l, new UserData(userId,"","","","",""));
+        SnapshotEntity secondSnapshot = new SnapshotEntity(0, 1l, new UserData(userId,"","","","",""));
 
         Field creationDate = SnapshotEntity.class.getDeclaredField("creationDate");
         creationDate.setAccessible(true);
@@ -96,9 +96,9 @@ public class DefaultSnapshotRepositoryTest {
     public void shouldFindSnapshotWithEventVersion() throws Exception {
 
         Long userId = 1l;
-        SnapshotEntity snapshot1 = new SnapshotEntity(0, 10l, new UserData(userId,"","","",""));
-        SnapshotEntity snapshot2 = new SnapshotEntity(0, 11l, new UserData(userId,"","","",""));
-        SnapshotEntity snapshot3 = new SnapshotEntity(0, 12l, new UserData(userId,"","","",""));
+        SnapshotEntity snapshot1 = new SnapshotEntity(0, 10l, new UserData(userId,"","","","",""));
+        SnapshotEntity snapshot2 = new SnapshotEntity(0, 11l, new UserData(userId,"","","","",""));
+        SnapshotEntity snapshot3 = new SnapshotEntity(0, 12l, new UserData(userId,"","","","",""));
 
 
         em.getTransaction().begin();
@@ -126,7 +126,7 @@ public class DefaultSnapshotRepositoryTest {
     public void estFindSnapshotWithEventVersionThrowSnapshotWithVersionNotActiveException() throws Exception{
         Long userId = 1l;
         Long version = 10l;
-        SnapshotEntity secondSnapshot = new SnapshotEntity(0, version, new UserData(userId,"","","",""));
+        SnapshotEntity secondSnapshot = new SnapshotEntity(0, version, new UserData(userId,"","","","",""));
         em.getTransaction().begin();
         em.persist(secondSnapshot);
         rut.delete(secondSnapshot.getAggregateRootEntityId());

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{languageBean.locale}" encoding="UTF-8" contentType="text/html">
+<h:head>
+    <title>Traffic Offenses</title>
+    <h:outputStylesheet name="css/style.css"  />
+</h:head>
+<h:body styleClass="background-class">
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Traffic Offenses" outcome="/home/home.xhtml"/>
+            <p:submenu label="#{msg['application.language']}" icon="fa fa-language">
+                <p:menuitem value="#{msg['application.polish']}" actionListener="#{languageBean.setLanguage('pl')}" icon="fa fa-angle-right" update="@all"/>
+                <p:menuitem value="#{msg['application.english']}" actionListener="#{languageBean.setLanguage('en')}" icon="fa fa-angle-right" update="@all"/>
+            </p:submenu>
+            <p:submenu label="Menu" icon="ui-icon-document">
+                <p:menuitem  value="#{msg['home.home-page']}" outcome="toHomePage"/>
+                <p:menuitem  value="#{msg['home-admin.add-user']}" outcome="toAddNewUserPage"/>
+                <p:menuitem  value="#{msg['home-admin.add-new-role']}" outcome="toAddNewRolePage"/>
+                <p:menuitem  value="#{msg['home-admin.edit-user']}" outcome="toUserListPage"/>
+            </p:submenu>
+
+            <f:facet name="options">
+                <h:form>
+                    <p:commandButton value="#{msg['application.logout']}" action="#{authenticationBean.logout}"/>
+                </h:form>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+
+    <div class="container">
+        <p:messages id="messages" globalOnly="true" showDetail="true" autoUpdate="true" closable="true" />
+        <h:panelGroup id="groups" >
+            <h:form>
+
+                <h:panelGrid columns="3">
+                    <h:outputLabel for="firstname" value="#{msg['admin.add-user.name']}" />
+                    <p:inputText id="firstname" name="firstname" value="#{createUserBean.firstName}" validatorMessage="#{msg['validation-code.NAME']}"/>
+                    <p:message for="firstname" />
+                    <h:outputLabel for="lastName" value="#{msg['admin.add-user.surname']}" />
+                    <p:inputText id="lastName" name="lastName" value="#{createUserBean.lastName}" validatorMessage="#{msg['validation-code.SURNAME']}"/>
+                    <p:message for="lastName" />
+                    <h:outputLabel for="pesel" value="#{msg['admin.add-user.pesel']}" />
+                    <p:inputMask id="pesel" name="pesel" value="#{createUserBean.pesel}" mask="99999999999" validatorMessage="#{msg['validation-code.PESEL']}"/>
+                    <p:message for="pesel" />
+                    <h:outputLabel for="email" value="#{msg['admin.add-user.email']}" />
+                    <p:inputText id="email" name="email" value="#{createUserBean.email}" validatorMessage="#{msg['validation-code.EMAIL']}"/>
+                    <p:message for="email" />
+                    <h:outputLabel   for="password" value="Hasło:" />
+                    <p:inputText id="password" value="#{createUserBean.password}" name="password" />
+                    <p:message for="password" />
+                    <h:outputLabel   for="drivingLicense" value="Prawo jazdy użytkownika:" />
+                    <p:selectBooleanCheckbox  id="drivingLicense" value="#{createUserBean.userHasDrivingLicense}" >
+                        <p:ajax update="driving-license-panel" />
+                    </p:selectBooleanCheckbox >
+                </h:panelGrid>
+                <p:separator />
+
+
+                <h:panelGroup id="driving-license-panel">
+                    <h:panelGrid rendered="#{createUserBean.userHasDrivingLicense}" columns="3">
+                        <h:outputLabel for="licenseNumber" value="#{msg['admin.add-user.license-number']}" />
+                        <p:inputMask id="licenseNumber" name="licenseNumber" value="#{createUserBean.licenseNumber}" mask="99999/99/9999" validatorMessage="#{msg['validation-code.LICENSE-NUMBER']}"/>
+                        <p:message for="licenseNumber" />
+                        <h:outputLabel for="lastName" value="#{msg['admin.add-user.license-creation-date']}"/>
+                        <p:inputMask id="creationDate" value="#{createUserBean.licenseCreationDate}" mask="99-99-9999" required="true" requiredMessage="#{msg['validation-code.REQUIRED']}" validatorMessage="#{msg['validation-code.LICENSE-CREATION-DATE']}">
+                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </p:inputMask>
+                        <p:message for="creationDate"/>
+
+                        <h:outputLabel for="status" value="#{msg['admin.add-user.license-status']}" />
+                        <p:selectOneMenu id="status" value="#{createUserBean.licenseStatus}" converter="custom.converter.LicenseDriverStatusConverter">
+                            <f:selectItem itemLabel="#{msg['admin.add-user.license-status.ACTIVE']}" itemValue="ACTIVE"/>
+                            <f:selectItem itemLabel="#{msg['admin.add-user.license-status.TEMPORARY_INACTIVE']}" itemValue="TEMPORARY_INACTIVE" />
+                            <f:selectItem itemLabel="#{msg['admin.add-user.license-status.PERMANENT_INACTIVE']}" itemValue="PERMAMENT_INACTIVE" />
+                        </p:selectOneMenu>
+
+                    </h:panelGrid>
+                </h:panelGroup>
+                <p:commandButton value="Zapisz" action="#{createUserBean.saveAdministratorUser()}" update="@form"/>
+            </h:form>
+
+        </h:panelGroup>
+    </div>
+
+
+
+    <div id="footer">#{msg['application.footer']}</div>
+</h:body>
+</f:view>
+</html>
+
+

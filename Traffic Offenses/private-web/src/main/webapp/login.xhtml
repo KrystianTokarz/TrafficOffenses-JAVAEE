@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{languageBean.locale}" encoding="UTF-8" contentType="text/html">
+<h:head>
+    <title>Traffic Offenses - #{msg['application.login-page']}</title>
+    <h:outputStylesheet name="css/style.css"  />
+</h:head>
+<h:body styleClass="background-class">
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Traffic Offenses" outcome="index.xhtml"/>
+            <p:submenu label="#{msg['application.language']}" icon="fa fa-language">
+                <p:menuitem value="#{msg['application.polish']}" actionListener="#{languageBean.setLanguage('pl')}" icon="fa fa-angle-right" update="@all"/>
+                <p:menuitem value="#{msg['application.english']}" actionListener="#{languageBean.setLanguage('en')}" icon="fa fa-angle-right" update="@all"/>
+            </p:submenu>
+            <f:facet name="options">
+                <p:button type="button" value="#{msg['application.login']}" outcome="toHomePage" icon="ui-icon-power" />
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+    <div class="ui-g container login-information-container">
+        <div class="ui-g-12">
+            <h2>#{msg['login.information']}</h2>
+        </div>
+    </div>
+
+    <div class="ui-g container">
+        <div class="ui-g-2 ui-md-5  ui-lg-5"></div>
+        <div class="ui-g-8 ui-md-4  ui-lg-4 ">
+            <h:form id="login" onsubmit="document.getElementById('login').action='j_security_check';" prependId="false">
+                <h:panelGrid action="j_security_check" columns="2">
+                    <h:outputLabel for="j_username" value="#{msg['login.pesel']}" />
+                    <p:inputText id="j_username" name="username"/>
+                    <h:outputLabel for="j_password" value="#{msg['login.password']}" />
+                    <p:password id="j_password" name="j_password"/>
+                    <p:commandButton value="#{msg['login.login']}" ajax="false"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+        <div class="ui-g-2 ui-md-3 ui-lg-3"></div>
+    </div>
+
+    <div id="footer">#{msg['application.footer']}</div>
+</h:body>
+</f:view>
+</html>

@@ -24,7 +24,13 @@
             <type>ejb</type>
         </dependency>
         <dependency>
-            <artifactId>core-web</artifactId>
+            <artifactId>public-web</artifactId>
+            <groupId>pl.offenses</groupId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <artifactId>private-web</artifactId>
             <groupId>pl.offenses</groupId>
             <version>1.0-SNAPSHOT</version>
             <type>war</type>
@@ -49,6 +55,19 @@
                 <configuration>
                     <version>6</version>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <modules>
+                        <webModule>
+                            <artifactId>public-web</artifactId>
+                            <groupId>pl.offenses</groupId>
+                            <context-root>/traffic-offenses</context-root>
+                        </webModule>
+                        <webModule>
+                            <artifactId>private-web</artifactId>
+                            <groupId>pl.offenses</groupId>
+                            <context-root>/tf-private</context-root>
+                        </webModule>
+                    </modules>
+
                 </configuration>
             </plugin>
         </plugins>

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+    http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+
+        <!--system resources navigation-->
+        <navigation-case>
+            <from-outcome>toHomePage</from-outcome>
+            <to-view-id>/home/home.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>toWelcomePage</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+
+
+        <!--private resources navigation-->
+
+        <navigation-case>
+            <from-outcome>toMandatePage</from-outcome>
+            <to-view-id>/private/mandate.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>toDriverFinderPage</from-outcome>
+            <to-view-id>/private/driver-finder.xhtml</to-view-id>
+        </navigation-case>
+
+
+        <!--administrator resources navigation-->
+        <navigation-case>
+            <from-outcome>toAddNewUserPage</from-outcome>
+            <to-view-id>/admin/add-user.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>toAddNewRolePage</from-outcome>
+            <to-view-id>/admin/add-user-role.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>toUserListPage</from-outcome>
+            <to-view-id>/admin/user-list.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <application>
+        <resource-bundle>
+            <base-name>bundle.messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+        <locale-config>
+            <default-locale>pl</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+    </application>
+</faces-config>

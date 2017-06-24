@@ -11,9 +11,12 @@ public class UserEventsWithPointsVO implements Serializable{
 
     private int numberOfPoints;
 
-    public UserEventsWithPointsVO(List<Event> events, int numberOfPoints) {
+    private long snapshotVersion;
+
+    public UserEventsWithPointsVO(List<Event> events, int numberOfPoints, Long snapshotVersion) {
         this.events = events;
         this.numberOfPoints = numberOfPoints;
+        this.snapshotVersion = snapshotVersion;
     }
 
     public List<Event> getEvents() {
@@ -22,5 +25,9 @@ public class UserEventsWithPointsVO implements Serializable{
 
     public int getNumberOfPoints() {
         return numberOfPoints;
+    }
+
+    public long getSnapshotVersion() {
+        return snapshotVersion;
     }
 }

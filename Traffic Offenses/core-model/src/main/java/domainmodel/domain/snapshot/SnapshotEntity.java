@@ -9,11 +9,15 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(
               name = "Snapshot.findLastSnapshot",
-              query = "SELECT s FROM SnapshotEntity s where s.userData.userAggregateRootId = :userID  ORDER BY s.creationDate DESC"
+              query = "SELECT s FROM SnapshotEntity s where s.userData.userAggregateRootId = :userID AND s.aggregateStatus = 'ACTIVE' ORDER BY s.creationDate DESC"
         ),
         @NamedQuery(
                 name = "Snapshot.findSnapshotWithVersion",
                 query = "SELECT s FROM SnapshotEntity s where s.userData.userAggregateRootId = :userID  and s.eventVersion = :version"
+        ),
+        @NamedQuery(
+                name = "Snapshot.findLastSnapshotVersion",
+                query = "SELECT s.eventVersion FROM SnapshotEntity s where s.userData.userAggregateRootId = :userID  ORDER BY s.creationDate DESC"
         )
 })
 @Entity

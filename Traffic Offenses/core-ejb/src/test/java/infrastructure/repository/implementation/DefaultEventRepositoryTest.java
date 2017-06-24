@@ -47,11 +47,11 @@ public class DefaultEventRepositoryTest {
         Long userId = 50l;
         Long eventVersion1 = 5l;
         Long eventVersion2 = 10l;
-        Event event1 = new Event(new UserData(userId, "","","",""),null,eventVersion1);
-        Event event2 = new Event(new UserData(userId, "","","",""),null,eventVersion1);
-        Event event3 = new Event(new UserData(userId, "","","",""),null,eventVersion1);
-        Event event4 = new Event(new UserData(userId, "","","",""),null,eventVersion2);
-        Event event5 = new Event(new UserData(userId, "","","",""),null,eventVersion2);
+        Event event1 = new Event(new UserData(userId, "","","","",""),null,eventVersion1);
+        Event event2 = new Event(new UserData(userId, "","","","",""),null,eventVersion1);
+        Event event3 = new Event(new UserData(userId, "","","","",""),null,eventVersion1);
+        Event event4 = new Event(new UserData(userId, "","","","",""),null,eventVersion2);
+        Event event5 = new Event(new UserData(userId, "","","","",""),null,eventVersion2);
 
         em.getTransaction().begin();
         rut.persist(event1);
@@ -71,29 +71,6 @@ public class DefaultEventRepositoryTest {
 
     }
 
-    @Test
-    public void shouldFindEvents() throws Exception {
-        Long userId = 44l;
-        Event event1 = new Event(new UserData(userId, "","","",""),null,0l);
-        Event event2 = new Event(new UserData(userId, "","","",""),null,2l);
-        Event event3 = new Event(new UserData(userId, "","","",""),null,4l);
-        Event event4 = new Event(new UserData(userId, "","","",""),null,5l);
-        Event event5 = new Event(new UserData(userId, "","","",""),null,6l);
 
-        em.getTransaction().begin();
-        rut.persist(event1);
-        rut.persist(event2);
-        rut.persist(event3);
-        rut.persist(event4);
-        rut.persist(event5);
-        em.flush();
-
-        List<Event> eventsInDBWithSelectVersion = rut.findEvents(userId);
-
-        em.getTransaction().commit();
-
-
-        assertThat(eventsInDBWithSelectVersion).hasSize(5);
-    }
 
 }
